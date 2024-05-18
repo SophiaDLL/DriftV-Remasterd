@@ -18,17 +18,18 @@ function Drift.GetCurrentAngle()
     local pIsInVeh = IsPedInAnyVehicle(pPed, false)
     if pIsInVeh then
         local veh = GetVehiclePedIsIn(pPed, false)
-        local vx,vy,_ = table.unpack(GetEntityVelocity(veh))
-        local modV = math.sqrt(vx*vx + vy*vy)
-    
-    
-        local _,_,rz = table.unpack(GetEntityRotation(veh,0))
-        local sn,cs = -math.sin(math.rad(rz)), math.cos(math.rad(rz))
-    
-        if GetEntitySpeed(veh)* 3.6 < 25 or GetVehicleCurrentGear(veh) == 0 then return 0,modV end --speed over 25 km/h
-    
-        local cosX = (sn*vx + cs*vy)/modV
-        return math.deg(math.acos(cosX))*0.5, modV
+        local vx, vy, _ = table.unpack(GetEntityVelocity(veh))
+        local modV = math.sqrt(vx * vx + vy * vy)
+
+        local _, _, rz = table.unpack(GetEntityRotation(veh, 0))
+        local sn, cs = -math.sin(math.rad(rz)), math.cos(math.rad(rz))
+
+        if GetEntitySpeed(veh) * 3.6 < 25 or GetVehicleCurrentGear(veh) == 0 then
+            return 0, modV
+        end -- speed over 25 km/h
+
+        local cosX = (sn * vx + cs * vy) / modV
+        return math.deg(math.acos(cosX)) * 0.5, modV
     else
         return 0
     end
@@ -83,10 +84,10 @@ function Drift.CalculateDriftPoint(speed, angle)
         if angle > 40 then
             angle = 40 -- To avoid cheated bonus
         end
-    
+
         local basePointToAddForAngle = 1.5
         local points = (0.02 * (basePointToAddForAngle + angle) * basePointToAddForAngle) * frames
-    
+
         local basePointToAddForSpeed = 1
         local points = points + ((0.02 * (basePointToAddForSpeed + speed) * basePointToAddForSpeed) * frames)
         return points * Drift.multiplicator
@@ -96,13 +97,11 @@ function Drift.CalculateDriftPoint(speed, angle)
 end
 
 function Drift.SendDriftDataToNui()
-    SendNUIMessage(
-        {
-            ShowHud = true,
-            driftPoints = math.floor(Drift.currentPoints),
-            driftDisplayMulti = "x"..Utils.Round(Drift.multiplicator, 1),
-        }
-    )
+    SendNUIMessage({
+        ShowHud = true,
+        driftPoints = math.floor(Drift.currentPoints),
+        driftDisplayMulti = "x" .. Utils.Round(Drift.multiplicator, 1),
+    })
 end
 
 function Drift.RefreshAngleFromHud()
@@ -113,7 +112,7 @@ function Drift.StartMultiplicatorLoop()
     Citizen.CreateThread(function()
         Drift.multiplicatorLoop = true
         while Drift.multiplicatorLoop do
-            --print("Looping multiplier", Drift.multiplicator )
+            -- print("Looping multiplier", Drift.multiplicator )
             local angle = Drift.GetCurrentAngle()
             if angle < 10 or Drift.GetCurrentSpeed() < 25 then
                 Drift.multiplicator = Drift.multiplicator - 0.025
@@ -132,8 +131,6 @@ function Drift.StartMultiplicatorLoop()
         end
     end)
 end
-
-
 
 Citizen.CreateThread(function()
     local Counter = {}
@@ -159,7 +156,9 @@ Citizen.CreateThread(function()
                     Drift.ResetDriftCounter()
                     Drift.multiplicatorLoop = false
 
-                    SendNUIMessage({HideHud = true})
+                    SendNUIMessage({
+                        HideHud = true,
+                    })
                 end
             end
 
