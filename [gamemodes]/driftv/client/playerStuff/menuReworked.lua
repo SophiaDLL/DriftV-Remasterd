@@ -123,7 +123,7 @@ function OpenMainMenu()
                     if not p:IsInGarage() then
                         RageUI.Button(garageTag, "Return to the lobby", {RightLabel = ""}, true, {
                         onSelected = function()
-                            
+
                             open = false
                             RageUI.CloseAll()
                             EnableLobby()
@@ -138,7 +138,7 @@ function OpenMainMenu()
                             EnableLobby()
                         end,
                         });
-                        
+
                     end
                     RageUI.Button('→    My Vehicles', nil, {RightLabel = ">"}, not p:IsInGarage(), {}, vehicle);
                     RageUI.Button('→    Vehicle options', "Available only inside a vehicle", {RightLabel = ">"}, p:isInVeh(), {}, vehicleOptions);
@@ -229,7 +229,7 @@ function OpenMainMenu()
                         RageUI.Button("[#~b~"..k.."~s~] - "..v.name.." ~g~"..v.members.."~s~"..Config.MaxMembers.." | ~b~"..v.elo, "Crew points: "..v.points.." -  Win/Loose: "..v.win.."/"..v.loose, {}, true, {});
                     end
                 end)
-                
+
 
                 RageUI.IsVisible(information, function()
                     RageUI.Button("Money: "..GroupDigits(tostring(p:GetMoney())) .. "$", nil, {}, true, {});
@@ -257,7 +257,7 @@ function OpenMainMenu()
                                 SetVehProps(veh:getEntityId(), v.props)
                                 lastSpawned = veh:getNetId()
                                 TaskWarpPedIntoVehicle(p:ped(), veh:getEntityId(), -1)
-                                
+
                             end,
                         });
                     end
@@ -367,7 +367,7 @@ function OpenMainMenu()
                             cam.attachToVehicleBone("DRIFT_CAM_1", p:currentVeh(), GetEntityBoneIndexByName(p:currentVeh(), "chassis"), true, 0.0, 0.0, 0.0, 0.0, -2.0, 1.5, true)
                             cam.setActive("DRIFT_CAM_1", true)
                             cam.render("DRIFT_CAM_1", true, true, 500)
-                            activeCamName = "DRIFT_CAM_1" 
+                            activeCamName = "DRIFT_CAM_1"
                         end,
                     });
                     RageUI.Button("Drift cam #2", nil, {}, true, {
@@ -458,7 +458,7 @@ function OpenMainMenu()
                                 Wait(1000)
                                 cam.delete("TIME")
 
-                                
+
                             end,
                         });
                     end
@@ -497,7 +497,7 @@ Citizen.CreateThread(function()
 
         if IsPedDeadOrDying(p:ped(), 1) then
             NetworkResurrectLocalPlayer(p:pos(), p:heading(), 1, 0)
-            
+
         end
         Wait(100)
     end
@@ -551,16 +551,16 @@ Citizen.CreateThread(function()
 
                         if IsPedInAnyVehicle(ped, false) and GetVehiclePedIsIn(ped, false) ~= pVeh then
                             local veh = GetVehiclePedIsIn(ped, false)
-    
+
                             SetEntityNoCollisionEntity(pPed, veh, true)
                             SetEntityNoCollisionEntity(veh, pPed, true)
-    
+
                             SetEntityNoCollisionEntity(pVeh, veh, true)
                             SetEntityNoCollisionEntity(veh, pVeh, true)
-    
+
                            -- SetEntityCollision(veh, false, true)
                             SetEntityAlpha(veh, 200, false)
-    
+
                         end
                     else
                         ResetEntityAlpha(ped)
@@ -568,8 +568,8 @@ Citizen.CreateThread(function()
                             ResetEntityAlpha(GetVehiclePedIsIn(ped, false))
                         end
                     end
-                    
-                    
+
+
                 end
 
 
@@ -611,7 +611,7 @@ function StartLoopAnimation()
             Wait(1)
         end
     end)
-    
+
     Citizen.CreateThread(function()
         while open do
             for k,v in pairs(animatedTagState) do
