@@ -1,3 +1,5 @@
+2.0 WIP: https://github.com/Rubylium/DriftV/tree/2.0
+ 
 # DriftV
 Drift base for FiveM
 
