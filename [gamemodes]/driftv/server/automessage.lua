@@ -5,7 +5,7 @@ Citizen.CreateThread(function()
     while true do
         for _,v in pairs(message) do
 
-            SetConvarReplicated("sv_hostname", string.format(Config.serverName, tostring(pCount), Config.discordLink))
+            SetConvarReplicated("sv_hostname", string.format(Config.serverName, tostring(PlayerCount), Config.discordLink))
             
             SetConvarServerInfo("Players", tostring(GetNumPlayerIndices()))
             SetConvarServerInfo("Type", "Drift")

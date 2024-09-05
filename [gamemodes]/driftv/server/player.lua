@@ -1,6 +1,6 @@
 player = {}
 saison = Config.playerSeason
-pCount = 1
+PlayerCount = 1
 GlobalState.mode = 'open'
 
 function InitPlayer(source)
@@ -41,12 +41,12 @@ function InitPlayer(source)
         debugPrint("Loaded player from database (" .. data.money .. " " .. data.driftPoint .. ")")
     end
 
-    pCount = pCount + 1
+    PlayerCount = PlayerCount + 1
     local source = tonumber(source)
     local license = GetLicense(source)
 
     local db = rockdb:new()
-    db:SaveInt("pCount", pCount)
+    db:SaveInt("PlayerCount", PlayerCount)
 
     local data = db:GetTable("player_" .. tostring(license) .. saison)
 
@@ -81,11 +81,11 @@ end
 
 Citizen.CreateThread(function()
     local db = rockdb:new()
-    local data = db:GetInt("pCount")
+    local data = db:GetInt("PlayerCount")
     if data ~= nil then
-        pCount = data
+        PlayerCount = data
     else
-        pCount = 1
+        PlayerCount = 1
     end
     while true do
         for k,v in pairs(player) do
