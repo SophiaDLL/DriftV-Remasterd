@@ -66,6 +66,7 @@ end)
 
 
 RegisterSecuredNetEvent(Events.raceEnd, function(race, points, vehicle, time)
+    local source = source
     SubmitRaceScore(source, race, points, vehicle, time)
 
     TriggerClientEvent('chat:addMessage', -1, {
