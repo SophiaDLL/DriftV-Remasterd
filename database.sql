@@ -26,6 +26,22 @@ CREATE TABLE IF NOT EXISTS `kvp` (
   PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
+CREATE TABLE `players` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `license` VARCHAR(255) NOT NULL,
+    `season` VARCHAR(255) NOT NULL,
+    `pName` VARCHAR(255) NOT NULL,
+    `money` INT NOT NULL DEFAULT 0,
+    `driftPoint` INT NOT NULL DEFAULT 0,
+    `exp` INT NOT NULL DEFAULT 0,
+    `level` INT NOT NULL DEFAULT 0,
+    `cars` JSON NOT NULL,
+    `succes` JSON NOT NULL,
+    `crew` VARCHAR(255) NOT NULL DEFAULT 'None',
+    `crewOwner` BOOLEAN NOT NULL DEFAULT FALSE,
+    UNIQUE (`license`, `season`)
+);
+
 -- Les données exportées n'étaient pas sélectionnées.
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
