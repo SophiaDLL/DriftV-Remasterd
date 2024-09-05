@@ -52,25 +52,26 @@ end
 function RefreshCrewRanking()
     local ranking = {}
 
-    
-    for k,v in pairs(crew) do
-        if ranking[1] == nil then
-            table.insert(ranking, {name = v.name, elo = v.elo, win = v.win, loose = v.loose, points = v.totalPoints, members = v.memberCount})
-        else
-            local count = 1
-            local added = false
-            for i,j in pairs(ranking) do
-                if v.elo > j.elo then
-                    added = true
-                    table.insert(ranking, count, {name = v.name, elo = v.elo, win = v.win, loose = v.loose, points = v.totalPoints, members = v.memberCount})
-                    break
-                end
-                count = count + 1
+    local function insertIntoRanking(crewMember)
+        for i = 1, #ranking do
+            if crewMember.elo > ranking[i].elo then
+                table.insert(ranking, i, crewMember)
+                return
             end
-            if not added then
-                table.insert(ranking, #ranking + 1, {name = v.name, elo = v.elo, win = v.win, loose = v.loose, points = v.totalPoints, members = v.memberCount})
-            end
-        end   
+        end
+        table.insert(ranking, crewMember)
+    end
+
+    for _, v in pairs(crew) do
+        local crewMember = {
+            name = v.name,
+            elo = v.elo,
+            win = v.win,
+            loose = v.loose,
+            points = v.totalPoints,
+            members = v.memberCount
+        }
+        insertIntoRanking(crewMember)
     end
 
     CrewRanking = ranking
