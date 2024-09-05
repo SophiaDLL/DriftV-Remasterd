@@ -20,9 +20,13 @@ function debugPrint(text)
     print("^3DriftV: ^7"..text)
 end
 
-RegisterNetEvent("DeleteEntity")
-AddEventHandler("DeleteEntity", function(ent)
-    DeleteEntity(NetworkGetEntityFromNetworkId(ent)) 
+RegisterNetEvent("DeleteEntity", function(ent)
+    local entity = NetworkGetEntityFromNetworkId(ent)
+    if DoesEntityExist(entity) then
+        DeleteEntity(entity)
+    else
+        print("Entity does not exist for network ID: " .. tostring(ent))
+    end
 end)
 
 function GroupDigits(value)
