@@ -8,13 +8,13 @@ function rockdb:new()
 end
 
 function rockdb:SaveString(key, value)
-    MySQL.update.await('INSERT INTO kvp (key, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value = ?', {
+    MySQL.update.await('INSERT INTO kvp (`key`, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value = ?', {
         key, value, value
     })
 end
 
 function rockdb:GetString(key)
-    local row = MySQL.single.await('SELECT value FROM kvp WHERE key = ? LIMIT 1', {
+    local row = MySQL.single.await('SELECT value FROM kvp WHERE `key` = ? LIMIT 1', {
         key
     })
     if not row then return nil end
@@ -22,13 +22,13 @@ function rockdb:GetString(key)
 end
 
 function rockdb:SaveInt(key, value)
-    MySQL.update.await('INSERT INTO kvp (key, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value = ?', {
+    MySQL.update.await('INSERT INTO kvp (`key`, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value = ?', {
         key, tostring(value), tostring(value)
     })
 end
 
 function rockdb:GetInt(key)
-    local row = MySQL.single.await('SELECT value FROM kvp WHERE key = ? LIMIT 1', {
+    local row = MySQL.single.await('SELECT value FROM kvp WHERE `key` = ? LIMIT 1', {
         key
     })
     if not row then return nil end
@@ -36,13 +36,13 @@ function rockdb:GetInt(key)
 end
 
 function rockdb:SaveFloat(key, value)
-    MySQL.update.await('INSERT INTO kvp (key, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value = ?', {
+    MySQL.update.await('INSERT INTO kvp (`key`, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value = ?', {
         key, tostring(value), tostring(value)
     })
 end
 
 function rockdb:GetFloat(key)
-    local row = MySQL.single.await('SELECT value FROM kvp WHERE key = ? LIMIT 1', {
+    local row = MySQL.single.await('SELECT value FROM kvp WHERE `key` = ? LIMIT 1', {
         key
     })
     if not row then return nil end
@@ -51,13 +51,13 @@ end
 
 function rockdb:SaveTable(key, table)
     local jsonValue = json.encode(table)
-    MySQL.update.await('INSERT INTO kvp (key, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value = ?', {
+    MySQL.update.await('INSERT INTO kvp (`key`, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value = ?', {
         key, jsonValue, jsonValue
     })
 end
 
 function rockdb:GetTable(key)
-    local row = MySQL.single.await('SELECT value FROM kvp WHERE key = ? LIMIT 1', {
+    local row = MySQL.single.await('SELECT value FROM kvp WHERE `key` = ? LIMIT 1', {
         key
     })
     if not row then return nil end
