@@ -7,45 +7,64 @@ function rockdb:new()
     return obj
 end
 
-function rockdb:SaveString(key, string)
-    SetResourceKvp(key, string)
+function rockdb:SaveString(key, value)
+    MySQL.update.await('INSERT INTO kvp (key, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value = ?', {
+        key, value, value
+    })
 end
 
 function rockdb:GetString(key)
-    return GetResourceKvpString(key)
+    local row = MySQL.single.await('SELECT value FROM kvp WHERE key = ? LIMIT 1', {
+        key
+    })
+    if not row then return nil end
+    return row.value
 end
 
-function rockdb:SaveInt(key, int)
-    SetResourceKvpInt(key, int)
+function rockdb:SaveInt(key, value)
+    MySQL.update.await('INSERT INTO kvp (key, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value = ?', {
+        key, tostring(value), tostring(value)
+    })
 end
 
 function rockdb:GetInt(key)
-    return GetResourceKvpInt(key)
+    local row = MySQL.single.await('SELECT value FROM kvp WHERE key = ? LIMIT 1', {
+        key
+    })
+    if not row then return nil end
+    return tonumber(row.value)
 end
 
-function rockdb:SaveFloat(key, float)
-    SetResourceKvpFloat(key, float)
+function rockdb:SaveFloat(key, value)
+    MySQL.update.await('INSERT INTO kvp (key, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value = ?', {
+        key, tostring(value), tostring(value)
+    })
 end
 
 function rockdb:GetFloat(key)
-    return GetResourceKvpFloat(key)
+    local row = MySQL.single.await('SELECT value FROM kvp WHERE key = ? LIMIT 1', {
+        key
+    })
+    if not row then return nil end
+    return tonumber(row.value)
 end
 
 function rockdb:SaveTable(key, table)
-    SetResourceKvp(key, json.encode(table))
+    local jsonValue = json.encode(table)
+    MySQL.update.await('INSERT INTO kvp (key, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value = ?', {
+        key, jsonValue, jsonValue
+    })
 end
 
 function rockdb:GetTable(key)
-    local data = GetResourceKvpString(key)
-    if data ~= nil then
-        return json.decode(data)
-    else
-        return nil
-    end
+    local row = MySQL.single.await('SELECT value FROM kvp WHERE key = ? LIMIT 1', {
+        key
+    })
+    if not row then return nil end
+    return json.decode(row.value)
 end
 
--- Exemple utilisation
-
+-- Example usage
 local function GetTimeInMs(first, seconde)
     return tostring(seconde - first)
 end
