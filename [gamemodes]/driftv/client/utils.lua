@@ -3,7 +3,7 @@ function LoadModel(name)
     if IsModelInCdimage(model) then
         RequestModel(model)
         while not HasModelLoaded(model) do
-            ShowLoadingMessageTimed(20, "Loading model ...", 1)
+            ShowLoadingMessageTimed(20, "Loading model ... (" .. name ..")", 1)
             Wait(1)
         end
     else
