@@ -289,6 +289,10 @@
         "GetNumPlayerIndices"
     ],
     "Lua.diagnostics.disable": [
-        "undefined-global"
+        "undefined-global",
+        "undefined-field",
+        "missing-parameter",
+        "cast-local-type",
+        "param-type-mismatch"
     ]
 }
