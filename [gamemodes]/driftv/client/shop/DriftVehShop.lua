@@ -43,7 +43,7 @@ local vehs = {
             {maker = "Nissan", price = 350000,label = "Skyline GT-R34 (BNR34) 2002",model = "skyline"},
             {maker = "Mitsubishi", price = 230000,label = "Lancer Evo VI",model = "cp9a"},
             {maker = "Ford", price = 450000,label = "2015 Mustang GT",model = "MGT"},
-            
+
         }
     },
     {
@@ -65,6 +65,8 @@ local previewVeh = {
     entity = 0,
     model = ""
 }
+local SelectedModel = ""
+local previewEntitys = {}
 local previewCoords = vector4(-44.621406555176, -1096.7896728516, 26.422359466553, 118.64887237549)
 local vehShopCoords = vector3(-43.162559509277, -1100.0212402344, 26.422359466553)
 local camPos = vector3(-45.922637939453, -1102.5314941406, 27.422361373901)
@@ -84,6 +86,7 @@ main.Closed = function()
 end
 main.WidthOffset = 100.0
 sub.WidthOffset = 100.0
+local isCreatingVehicle = false
 
 function OpenVehShopMenu(GoBackToLobby)
     if open then
@@ -141,15 +144,32 @@ function OpenVehShopMenu(GoBackToLobby)
                                 end
                             end,
                             onActive = function()
-                                if previewVeh.model ~= v.model then
-                                    DeleteEntity(previewVeh.entity)
+                                if SelectedModel ~= v.model and not isCreatingVehicle then
+                                    SelectedModel = v.model
+                                    isCreatingVehicle = true
+                                    Citizen.CreateThread(function()
+                                        -- Delete all existing preview entities
+                                        for _, entity in pairs(previewEntitys) do
+                                            DeleteEntity(entity)
+                                        end
+                                        previewEntitys = {}
 
-                                    local veh = entity:CreateVehicleLocal(v.model, previewCoords.xyz, previewCoords.w)
-                                    SetVehicleOnGroundProperly(veh:getEntityId())
-                                    FreezeEntityPosition(veh:getEntityId(), true)
-                                    SetVehicleDirtLevel(veh:getEntityId(), 0.0)
-                                    previewVeh.entity = veh:getEntityId()
-                                    previewVeh.model = v.model
+                                        -- Create and setup the new vehicle
+                                        local veh = entity:CreateVehicleLocal(SelectedModel, previewCoords.xyz, previewCoords.w)
+                                        local vehId = veh:getEntityId()
+
+                                        table.insert(previewEntitys, vehId)
+                                        SetVehicleOnGroundProperly(vehId)
+                                        FreezeEntityPosition(vehId, true)
+                                        SetVehicleDirtLevel(vehId, 0.0)
+
+                                        -- Update preview vehicle details
+                                        previewVeh.entity = vehId
+                                        previewVeh.model = SelectedModel
+
+                                        -- Reset the flag after vehicle creation
+                                        isCreatingVehicle = false
+                                    end)
                                 end
                             end
                         }, sub);
