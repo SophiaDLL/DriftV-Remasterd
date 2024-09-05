@@ -1,42 +1,7 @@
-2.0 WIP: https://github.com/Rubylium/DriftV/tree/2.0
- 
-# DriftV
-Drift base for FiveM
-
-This gamemode as been designed to work with OneSync infinity. It will work without it, but performance can be worse.
-
-ensure you need 
-
-```
-ensure mapmanager
-ensure chat
-ensure chat-theme-gtao
-ensure spawnmanager
-ensure sessionmanager
-
-ensure mysql-async
-ensure driftv
-ensure drift-assets
-ensure drift-vehicles
-ensure driftV-sounds
-ensure drift-extra-assets
-ensure hologramspeed
-ensure speedometer
-ensure loading
-ensure fh4map
-ensure utils
-ensure FeedM
-```
-
-## Database Setup
-
-To set up the database for DriftV, use the following SQL script:
-
-```sql
 -- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Server version:               11.5.1-MariaDB-log - mariadb.org binary distribution
--- Server OS:                    Win64
+-- Hôte:                         127.0.0.1
+-- Version du serveur:           11.5.1-MariaDB-log - mariadb.org binary distribution
+-- SE du serveur:                Win64
 -- HeidiSQL Version:             12.1.0.6537
 -- --------------------------------------------------------
 
@@ -49,20 +14,20 @@ To set up the database for DriftV, use the following SQL script:
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Database structure for driftv
+
+-- Listage de la structure de la base pour driftv
 CREATE DATABASE IF NOT EXISTS `driftv` /*!40100 DEFAULT CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci */;
 USE `driftv`;
 
--- Table structure for table `kvp`
+-- Listage de la structure de table driftv. kvp
 CREATE TABLE IF NOT EXISTS `kvp` (
   `key` varchar(255) NOT NULL,
   `value` text DEFAULT NULL,
   PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
--- Exported data was not selected.
+-- Les données exportées n'étaient pas sélectionnées.
 
--- Restore previous settings
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
