@@ -28,6 +28,8 @@ ensure FeedM
 
 ## Database Setup
 
+This database logic is temporary, it was just to switch away from saving data in KVP files.
+In the future, this will be replaced with proper database tables.
 To set up the database for DriftV, use the following SQL script:
 
 ```sql
