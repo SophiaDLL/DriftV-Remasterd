@@ -4,18 +4,8 @@ pCount = 1
 GlobalState.mode = 'open'
 
 function InitPlayer(source)
-    pCount = pCount + 1
-    local source = tonumber(source)
-    local license = GetLicense(source)
-
-    local db = rockdb:new()
-    db:SaveInt("pCount", pCount)
-
-    local data = {}
-    data = db:GetTable("player_"..tostring(license)..saison)
-
-    if data == nil then
-        data = {
+    local function initializeNewPlayer(source, license)
+        local data = {
             pName = GetPlayerName(source),
             license = license,
             money = Config.DefaultMoney,
@@ -30,28 +20,40 @@ function InitPlayer(source)
         }
         player[source] = data
         pCrew[source] = "None"
-
         SavePlayer(source)
         debugPrint("Player created into database")
-    else
-        if data.succes == nil then
-            data.succes = {}
-        end
-        if data.crew == nil then
-            data.crew = "None"
-            data.crewOwner = false
-        end
+        return data
+    end
+
+    local function loadExistingPlayer(source, data)
+        data.succes = data.succes or {}
+        data.crew = data.crew or "None"
+        data.crewOwner = data.crewOwner or false
 
         if crew[data.crew] == nil then
             data.crew = "None"
         end
 
         data.needSave = false
-
         pCrew[source] = data.crew
         player[source] = data
 
-        debugPrint("Loaded player for database ("..data.money .. " " .. data.driftPoint ..")")
+        debugPrint("Loaded player from database (" .. data.money .. " " .. data.driftPoint .. ")")
+    end
+
+    pCount = pCount + 1
+    local source = tonumber(source)
+    local license = GetLicense(source)
+
+    local db = rockdb:new()
+    db:SaveInt("pCount", pCount)
+
+    local data = db:GetTable("player_" .. tostring(license) .. saison)
+
+    if data == nil then
+        data = initializeNewPlayer(source, license)
+    else
+        loadExistingPlayer(source, data)
     end
 
     TriggerClientEvent("syncEvents", source, Events)
