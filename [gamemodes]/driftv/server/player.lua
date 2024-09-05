@@ -74,7 +74,7 @@ function RefreshPlayerData(source)
 end
 
 function RefreshOtherPlayerData()
-    TriggerClientEvent("driftV:RefreshOtherPlayerData", -1, crew, pCrew, KingDriftCrew, CrewRanking) --TODO: Rework. This is completely bad for network.
+    TriggerClientEvent("driftV:RefreshOtherPlayerData", -1, crew, pCrew, KingDriftCrew) --TODO: Rework. This is completely bad for network.
 end
 
 function SavePlayer(source)
@@ -104,6 +104,10 @@ Citizen.CreateThread(function()
         end
         Wait(10*1000)
     end
+end)
+
+RegisterNetEvent("driftV:AskRefreshCrewRanking", function()
+    TriggerClientEvent("driftV:RefreshCrewRanking", source, CrewRanking)
 end)
 
 RegisterNetEvent("driftV:InitPlayer")
