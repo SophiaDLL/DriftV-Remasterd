@@ -12,23 +12,7 @@ function InitPlayer(source)
     db:SaveInt("pCount", pCount)
 
     local data = {}
-    local gotData = false
-    if not Config.UseMysql then
-        data = db:GetTable("player_"..tostring(license)..saison)
-        gotData = false
-    else
-        MySQL.Async.fetchAll('SELECT * FROM players WHERE license = @license', { ['@license'] = tostring(license)..saison }, function(result)
-            --print(json.encode(result))
-
-            data = result[1]
-            gotData = true
-        end)
-    end
-
-    while gotData == false do
-        print("Waiting data load ...")
-        Wait(100)
-    end
+    data = db:GetTable("player_"..tostring(license)..saison)
 
     if data == nil then
         data = {
@@ -47,44 +31,9 @@ function InitPlayer(source)
         player[source] = data
         pCrew[source] = "None"
 
-        local dataCreated = false
-        if Config.UseMysql then
-            MySQL.Async.execute('INSERT INTO players (pName, money, license, driftPoint, exp, level, cars, succes, crew, crewOwner) VALUES (@name, @money, @license, @driftPoint, @exp, @level, @cars, @succes, @crew, @crewOwner)',
-            { 
-                ['name'] = data.pName,
-                ['money'] = data.money, 
-                ['license'] = tostring(license)..saison, 
-                ['driftPoint'] = math.floor(data.driftPoint), 
-                ['exp'] = math.floor(data.exp),
-                ['level'] = data.level,
-                ['cars'] = json.encode(data.cars),
-                ['succes'] = json.encode(data.succes),
-                ['crew'] = data.crew,
-                ['crewOwner'] = data.crewOwner,
-            },
-            function(affectedRows)
-                dataCreated = true
-                --print(affectedRows)
-            end)
-        else
-            dataCreated = true
-        end
-
-        while dataCreated == false do
-            print("Waiting data create ...")
-            Wait(100)
-        end
-
-        if not Config.UseMysql then
-            SavePlayer(source)
-        end
-
+        SavePlayer(source)
         debugPrint("Player created into database")
     else
-        if Config.UseMysql then
-            data.succes = json.decode(data.succes)
-            data.cars = json.decode(data.cars)
-        end
         if data.succes == nil then
             data.succes = {}
         end
@@ -92,8 +41,6 @@ function InitPlayer(source)
             data.crew = "None"
             data.crewOwner = false
         end
-        
-        
 
         if crew[data.crew] == nil then
             data.crew = "None"
@@ -125,37 +72,7 @@ end
 function SavePlayer(source)
     local db = rockdb:new()
     local license = GetLicense(source)
-
-    local saved = false
-    if Config.UseMysql then
-        local data = player[source]
-        MySQL.Async.execute('UPDATE players SET pName = @name, money = @money, driftPoint = @driftPoint, exp = @exp, level = @level, cars = @cars, succes = @succes, crew = @crew, crewOwner = @crewOwner WHERE license = @license',
-        { 
-            ['name'] = GetPlayerName(source), -- Get player name from native to force refresh if player change name
-            ['money'] = data.money, 
-            ['license'] = data.license, 
-            ['driftPoint'] = math.floor(data.driftPoint), 
-            ['exp'] = math.floor(data.exp),
-            ['level'] = data.level,
-            ['cars'] = json.encode(data.cars),
-            ['succes'] = json.encode(data.succes),
-            ['crew'] = data.crew,
-            ['crewOwner'] = data.crewOwner,
-        },
-        function(affectedRows)
-            save = true
-            --print(affectedRows)
-        end)
-    else
-        db:SaveTable("player_"..tostring(license)..saison, player[source])
-        save = true
-    end
-
-    while save == false do
-        print("Waiting for save ...") 
-        Wait(100)
-    end
-    
+    db:SaveTable("player_"..tostring(license)..saison, player[source])
     debugPrint("Player ("..source..") saved")
     player[source].needSave = false
 end
