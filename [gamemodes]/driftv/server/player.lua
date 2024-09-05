@@ -20,13 +20,20 @@ function InitPlayer(source)
         }
         player[source] = data
         pCrew[source] = "None"
+
+        -- Insert the new player data into the database
+        MySQL.insert.await('INSERT INTO `players` (license, season, pName, money, driftPoint, exp, level, cars, succes, crew, crewOwner) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', {
+            data.license, saison, data.pName, data.money, data.driftPoint, data.exp, data.level, json.encode(data.cars), json.encode(data.succes), data.crew, data.crewOwner
+        })
+
         SavePlayer(source)
         debugPrint("Player created into database")
         return data
     end
 
     local function loadExistingPlayer(source, data)
-        data.succes = data.succes or {}
+        data.succes = json.decode(data.succes or '{}')
+        data.cars = json.decode(data.cars or '[]')
         data.crew = data.crew or "None"
         data.crewOwner = data.crewOwner or false
 
@@ -48,7 +55,7 @@ function InitPlayer(source)
     local db = rockdb:new()
     db:SaveInt("PlayerCount", PlayerCount)
 
-    local data = db:GetTable("player_" .. tostring(license) .. saison)
+    local data = MySQL.single.await('SELECT * FROM `players` WHERE `license` = ? AND `season` = ? LIMIT 1', { license, saison })
 
     if data == nil then
         data = initializeNewPlayer(source, license)
@@ -61,7 +68,6 @@ function InitPlayer(source)
     RefreshPlayerData(source)
 end
 
-
 function RefreshPlayerData(source)
     TriggerClientEvent("driftV:RefreshData", source, player[source])
     RefreshOtherPlayerData()
@@ -72,9 +78,11 @@ function RefreshOtherPlayerData()
 end
 
 function SavePlayer(source)
-    local db = rockdb:new()
     local license = GetLicense(source)
-    db:SaveTable("player_"..tostring(license)..saison, player[source])
+    local data = player[source]
+    MySQL.update.await('UPDATE `players` SET `pName` = ?, `money` = ?, `driftPoint` = ?, `exp` = ?, `level` = ?, `cars` = ?, `succes` = ?, `crew` = ?, `crewOwner` = ? WHERE `license` = ? AND `season` = ?', {
+        data.pName, data.money, data.driftPoint, data.exp, data.level, json.encode(data.cars), json.encode(data.succes), data.crew, data.crewOwner, license, saison
+    })
     debugPrint("Player ("..source..") saved")
     player[source].needSave = false
 end
@@ -85,7 +93,6 @@ Citizen.CreateThread(function()
     PlayerCount = data ~= nil and data or 1
     while true do
         for k,v in pairs(player) do
-
             if GetPlayerPing(k) == 0 then
                 player[k] = nil
             else
@@ -123,7 +130,6 @@ RegisterSecuredNetEvent(Events.setDriftPoint, function(point)
 
     RefreshPlayerData(source)
     player[source].needSave = true
-
 end)
 
 RegisterSecuredNetEvent(Events.addMoney, function(money)
@@ -138,7 +144,6 @@ RegisterSecuredNetEvent(Events.SetExp, function(point)
 
     RefreshPlayerData(source)
     player[source].needSave = true
-
 end)
 
 RegisterSecuredNetEvent(Events.setArchivment, function(arch)
@@ -165,9 +170,7 @@ RegisterSecuredNetEvent(Events.setPassive, function(status)
     TriggerClientEvent(Events.setPassive, -1, inPassive)
 end)
 
-
 RegisterSecuredNetEvent(Events.buyVeh, function(price, label, model)
-
     if price <= player[source].money and price > 49000 then
         player[source].money = player[source].money - price
         table.insert(player[source].cars, {label = label, model = model, props = {}})
@@ -182,7 +185,6 @@ RegisterSecuredNetEvent(Events.refreshCars, function(cars)
     player[source].cars = cars
     player[source].needSave = true
 end)
-
 
 RegisterSecuredNetEvent(Events.busted, function(cops)
     TriggerClientEvent("FeedM:showNotification", -1, "The player "..GetPlayerName(source).." got busted with "..cops.." cops !", 15000, "danger")
