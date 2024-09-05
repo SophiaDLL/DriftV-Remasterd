@@ -204,7 +204,7 @@ end)
 
 RegisterNetEvent("driftV:StartMatchmaking")
 AddEventHandler("driftV:StartMatchmaking", function()
-    AddCrewToMachmaking(player[source].crew)
+    AddCrewToMatchmaking(player[source].crew)
     AddCrewMemberToMatchmaking(player[source].crew, source)
 end)
 
