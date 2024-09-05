@@ -74,7 +74,7 @@ function RefreshPlayerData(source)
 end
 
 function RefreshOtherPlayerData()
-    TriggerClientEvent("driftV:RefreshOtherPlayerData", -1, crew, pCrew, KingDriftCrew) --TODO: Rework. This is completely bad for network.
+    TriggerLatentClientEvent("driftV:RefreshOtherPlayerData", -1, 25000, crew, pCrew, KingDriftCrew) --TODO: Rework. This is completely bad for network.
 end
 
 function SavePlayer(source)
