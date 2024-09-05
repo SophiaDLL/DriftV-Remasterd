@@ -7,47 +7,42 @@ KingDriftCrew = {
 CrewRanking = {}
 
 function DoesCrewExist(name)
-    if crew[name] ~= nil then
-        return true
-    else
-        return false
-    end
+    return crew[name] ~= nil
 end
 
 function CreateCrew(tag, name, desc)
     if crew[name] == nil then
-        crew[name] = {}
-        crew[name].tag = tag
-        crew[name].name = name
-        crew[name].memberCount = 1
-        crew[name].totalPoints = 0
-        crew[name].win = 0
-        crew[name].loose = 0
-        crew[name].elo = 1000
-        crew[name].members = {}
-        crew[name].rank = 500
+        crew[name] = {
+            tag = tag,
+            name = name,
+            memberCount = 1,
+            totalPoints = 0,
+            win = 0,
+            loose = 0,
+            elo = 1000,
+            members = {},
+            rank = 500
+        }
         return true
     else
         return false
     end
 end
 
-function RefresKingDriftCrew()
+function RefreshKingDriftCrew()
     KingDriftCrew = {
         name = "Nothing",
         elo = 1000,
     }
 
-    for k,v in pairs(crew) do
-        print(v.elo, KingDriftCrew.elo, v.elo > KingDriftCrew.elo)
+    for _, v in pairs(crew) do
         if v.elo > KingDriftCrew.elo then
             KingDriftCrew.elo = v.elo
             KingDriftCrew.name = v.name
-            debugPrint("New drift king crew: "..v.name.." with ".. v.elo .." elo")
+            debugPrint("New drift king crew: " .. v.name .. " with " .. v.elo .. " elo")
         end
     end
 end
-
 
 function RefreshCrewRanking()
     local ranking = {}
@@ -80,7 +75,7 @@ end
 function RefreshCrewMemberCount(crewName)
     local count = 0
     local points = 0
-    for k,v in pairs(crew[crewName].members) do
+    for _, v in pairs(crew[crewName].members) do
         count = count + 1
         points = points + v.points
     end
@@ -115,8 +110,7 @@ function LeaveCrew(source)
         pCrew[source] = "None"
 
         if player[source].crewOwner then
-
-            for k,v in pairs(pCrew) do
+            for k, v in pairs(pCrew) do
                 if v == pCrewName then
                     pCrew[k] = "None"
                 end
@@ -124,7 +118,7 @@ function LeaveCrew(source)
 
             player[source].crewOwner = false
             crew[pCrewName] = nil
-            debugPrint("Crew "..pCrewName.." got deleted")
+            debugPrint("Crew " .. pCrewName .. " got deleted")
         else
             RefreshCrewMemberCount(pCrewName)
         end
@@ -134,16 +128,15 @@ function LeaveCrew(source)
 end
 
 function KickPlayerFromCrew(source, crewName, key)
-    -- use source for some owner check later
     if DoesCrewExist(crewName) then
         crew[crewName].members[key] = nil
     end
 
-    for k,v in pairs(GetPlayers()) do
+    for _, v in pairs(GetPlayers()) do
         local pLicense = GetLicense(v)
         if pLicense == key then
             LeaveCrew(tonumber(v))
-            debugPrint("Player "..v.." got kicked from "..crewName.." crew")
+            debugPrint("Player " .. v .. " got kicked from " .. crewName .. " crew")
             break
         end
     end
@@ -161,12 +154,11 @@ function AddPointsToCrew(source, pointsToAdd)
     end
 end
 
-
 RegisterNetEvent("driftV:CreateCrew")
-AddEventHandler("driftV:CreateCrew", function(tag, crew)
-    if CreateCrew(tag, crew) then
-        JoinCrew(source, crew, true)
-        player[source].crew = crew
+AddEventHandler("driftV:CreateCrew", function(tag, crewName)
+    if CreateCrew(tag, crewName) then
+        JoinCrew(source, crewName, true)
+        player[source].crew = crewName
         player[source].crewOwner = true
         RefreshPlayerData(source)
         RefreshOtherPlayerData()
@@ -175,9 +167,9 @@ AddEventHandler("driftV:CreateCrew", function(tag, crew)
 end)
 
 RegisterNetEvent("driftV:JoinCrew")
-AddEventHandler("driftV:JoinCrew", function(crew, id)
-    JoinCrew(id, crew, false)
-    player[id].crew = crew
+AddEventHandler("driftV:JoinCrew", function(crewName, id)
+    JoinCrew(id, crewName, false)
+    player[id].crew = crewName
     player[id].crewOwner = false
     RefreshPlayerData(id)
     RefreshOtherPlayerData()
@@ -185,8 +177,8 @@ AddEventHandler("driftV:JoinCrew", function(crew, id)
 end)
 
 RegisterNetEvent("driftV:InvitePlayer")
-AddEventHandler("driftV:InvitePlayer", function(crew, id)
-    TriggerClientEvent("driftV:GetInvitedToCrew", id, crew, source)
+AddEventHandler("driftV:InvitePlayer", function(crewName, id)
+    TriggerClientEvent("driftV:GetInvitedToCrew", id, crewName, source)
 end)
 
 RegisterNetEvent("driftV:LeaveCrew")
@@ -210,23 +202,17 @@ end)
 
 Citizen.CreateThread(function()
     local db = rockdb:new()
-    crew = db:GetString("CREW")
-    if crew == nil then
-        crew = {}
-    else
-        crew = json.decode(crew)
-    end
+    local data = db:GetString("CREW")
+    crew = data and json.decode(data) or {}
 
-    RefresKingDriftCrew()
-    debugPrint("Loaded all crews ")
+    RefreshKingDriftCrew()
+    debugPrint("Loaded all crews")
     while true do
         db:SaveString("CREW", json.encode(crew))
-
         debugPrint("Crews saved")
-
 
         RefreshCrewRanking()
         debugPrint("Crew ranking refresh ...")
-        Wait(30*1000)
+        Wait(30 * 1000)
     end
 end)
