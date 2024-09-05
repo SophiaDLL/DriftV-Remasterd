@@ -12,7 +12,7 @@ end
 
 function CreateCrew(tag, name, desc)
     if crew[name] == nil then
-        crew[name] = {
+        local newCrew = {
             tag = tag,
             name = name,
             memberCount = 1,
@@ -21,8 +21,16 @@ function CreateCrew(tag, name, desc)
             loose = 0,
             elo = 1000,
             members = {},
-            rank = 500
+            rank = 500,
+            needSave = true
         }
+        crew[name] = newCrew
+
+        -- Insert the new crew into the database
+        MySQL.insert.await('INSERT INTO `crews` (tag, name, memberCount, totalPoints, win, loose, elo, members, rank) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', {
+            newCrew.tag, newCrew.name, newCrew.memberCount, newCrew.totalPoints, newCrew.win, newCrew.loose, newCrew.elo, json.encode(newCrew.members), newCrew.rank
+        })
+
         return true
     else
         return false
@@ -82,6 +90,7 @@ function RefreshCrewMemberCount(crewName)
 
     crew[crewName].memberCount = count
     crew[crewName].totalPoints = points
+    crew[crewName].needSave = true
 end
 
 function JoinCrew(source, crewName, isCrewOwner)
@@ -118,6 +127,9 @@ function LeaveCrew(source)
 
             player[source].crewOwner = false
             crew[pCrewName] = nil
+
+            -- Delete the crew from the database
+            MySQL.update.await('DELETE FROM `crews` WHERE name = ?', { pCrewName })
             debugPrint("Crew " .. pCrewName .. " got deleted")
         else
             RefreshCrewMemberCount(pCrewName)
@@ -130,6 +142,7 @@ end
 function KickPlayerFromCrew(source, crewName, key)
     if DoesCrewExist(crewName) then
         crew[crewName].members[key] = nil
+        crew[crewName].needSave = true
     end
 
     for _, v in pairs(GetPlayers()) do
@@ -156,6 +169,7 @@ end
 
 RegisterNetEvent("driftV:CreateCrew")
 AddEventHandler("driftV:CreateCrew", function(tag, crewName)
+    local source = source
     if CreateCrew(tag, crewName) then
         JoinCrew(source, crewName, true)
         player[source].crew = crewName
@@ -168,6 +182,7 @@ end)
 
 RegisterNetEvent("driftV:JoinCrew")
 AddEventHandler("driftV:JoinCrew", function(crewName, id)
+    local source = source
     JoinCrew(id, crewName, false)
     player[id].crew = crewName
     player[id].crewOwner = false
@@ -178,11 +193,13 @@ end)
 
 RegisterNetEvent("driftV:InvitePlayer")
 AddEventHandler("driftV:InvitePlayer", function(crewName, id)
+    local source = source
     TriggerClientEvent("driftV:GetInvitedToCrew", id, crewName, source)
 end)
 
 RegisterNetEvent("driftV:LeaveCrew")
 AddEventHandler("driftV:LeaveCrew", function()
+    local source = source
     LeaveCrew(source)
     RefreshPlayerData(source)
     RefreshOtherPlayerData()
@@ -191,26 +208,56 @@ end)
 
 RegisterNetEvent("driftV:KickFromCrew")
 AddEventHandler("driftV:KickFromCrew", function(target)
+    local source = source
     KickPlayerFromCrew(source, player[source].crew, target)
 end)
 
 RegisterNetEvent("driftV:StartMatchmaking")
 AddEventHandler("driftV:StartMatchmaking", function()
+    local source = source
     AddCrewToMatchmaking(player[source].crew)
     AddCrewMemberToMatchmaking(player[source].crew, source)
 end)
 
 Citizen.CreateThread(function()
-    local db = rockdb:new()
-    local data = db:GetString("CREW")
-    crew = data and json.decode(data) or {}
+    -- Load all crews from the database
+    local result = MySQL.query.await('SELECT * FROM `crews`')
+    if result then
+        for _, row in ipairs(result) do
+            crew[row.name] = {
+                tag = row.tag,
+                name = row.name,
+                memberCount = row.memberCount,
+                totalPoints = row.totalPoints,
+                win = row.win,
+                loose = row.loose,
+                elo = row.elo,
+                members = json.decode(row.members),
+                rank = row.rank,
+                needSave = false
+            }
+        end
+    end
 
     RefreshKingDriftCrew()
     debugPrint("Loaded all crews")
     while true do
-        db:SaveString("CREW", json.encode(crew))
-        debugPrint("Crews saved")
-
+        -- Save only crews that need to be saved to the database
+        local savedCount = 0
+        for name, data in pairs(crew) do
+            if data.needSave then
+                MySQL.update.await('UPDATE `crews` SET memberCount = ?, totalPoints = ?, win = ?, loose = ?, elo = ?, members = ?, rank = ? WHERE name = ?', {
+                    data.memberCount, data.totalPoints, data.win, data.loose, data.elo, json.encode(data.members), data.rank, name
+                })
+                data.needSave = false
+                savedCount = savedCount + 1
+            end
+        end
+        
+        if savedCount > 0 then
+            debugPrint("Crews saved: " .. savedCount)
+        end
+        
         RefreshCrewRanking()
         debugPrint("Crew ranking refresh ...")
         Wait(30 * 1000)

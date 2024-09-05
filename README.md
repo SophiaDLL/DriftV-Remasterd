@@ -76,6 +76,19 @@ CREATE TABLE `players` (
     UNIQUE (`license`, `season`)
 );
 
+CREATE TABLE `crews` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `tag` VARCHAR(255) NOT NULL,
+    `name` VARCHAR(255) NOT NULL UNIQUE,
+    `memberCount` INT NOT NULL DEFAULT 1,
+    `totalPoints` INT NOT NULL DEFAULT 0,
+    `win` INT NOT NULL DEFAULT 0,
+    `loose` INT NOT NULL DEFAULT 0,
+    `elo` INT NOT NULL DEFAULT 1000,
+    `members` JSON NOT NULL,
+    `rank` INT NOT NULL DEFAULT 500
+);
+
 -- Exported data was not selected.
 
 -- Restore previous settings
