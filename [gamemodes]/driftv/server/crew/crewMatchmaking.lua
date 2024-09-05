@@ -3,329 +3,298 @@ local wars = {}
 
 function StartWarsBetweenCrew(crew1, crew2)
     Citizen.CreateThread(function()
-    local warId = uuid()
-    wars[warId] = {
-        crew1 = crew1,
-        crew2 = crew2,
-        scores = {
-            [crew1.name] = 0,
-            [crew2.name] = 0,
-        },
-        indiScores = {
-            [crew1.name] = {},
-            [crew2.name] = {},
-        },
-        warID = warId,
-        votedMaps = {},
-        waitingFirstPlayerFinish = true,
-        instanceID = math.random(1,1000),
-        needDone = 0,
-        done = 0,
-        refresh = function()
-            for k,v in pairs(wars[warId].crew1.members) do
-                TriggerClientEvent("crew:CrewWarRefreshData", v.id, wars[warId])
-            end
-            for k,v in pairs(wars[warId].crew2.members) do
-                TriggerClientEvent("crew:CrewWarRefreshData", v.id, wars[warId])
-            end
-        end,
-    }
+        local warId = uuid()
+        wars[warId] = {
+            crew1 = crew1,
+            crew2 = crew2,
+            scores = {
+                [crew1.name] = 0,
+                [crew2.name] = 0,
+            },
+            indiScores = {
+                [crew1.name] = {},
+                [crew2.name] = {},
+            },
+            warID = warId,
+            votedMaps = {},
+            waitingFirstPlayerFinish = true,
+            instanceID = math.random(1,1000),
+            needDone = 0,
+            done = 0,
+            refresh = function()
+                NotifyCrewMembers(crew1, "crew:CrewWarRefreshData", wars[warId])
+                NotifyCrewMembers(crew2, "crew:CrewWarRefreshData", wars[warId])
+            end,
+        }
 
-    print(#crew1.members, #crew2.members)
-    print(#crew1.members - #crew2.members )
-    print(#crew2.members - #crew1.members )
-    if #crew1.members > #crew2.members then -- Equality system
-        local diff = #crew1.members - #crew2.members 
-        for i = 1,diff do
-            TriggerClientEvent("crew:CrewWarNoMapSelected", crew1.members[#crew1.members])
-            crew1.members[#crew1.members] = nil
+        -- Balance teams if necessary
+        BalanceTeams(crew1, crew2)
+
+        -- Calculate total tasks needed to complete
+        wars[warId].needDone = #crew1.members + #crew2.members
+
+        -- Send players to war lobby
+        NotifyCrewMembers(crew1, "crew:CrewWarAboutToStart", crew2.name, warId)
+        NotifyCrewMembers(crew2, "crew:CrewWarAboutToStart", crew1.name, warId)
+        SetCrewInstance(crew1, wars[warId].instanceID)
+        SetCrewInstance(crew2, wars[warId].instanceID)
+
+        Wait(10 * 1000)
+        wars[warId].refresh()
+        debugPrint("Starting map vote (30s)")
+
+        NotifyCrewMembers(crew1, "crew:CrewWarStartMapVote")
+        NotifyCrewMembers(crew2, "crew:CrewWarStartMapVote")
+
+        Wait(30 * 1000) -- Map load time
+        wars[warId].refresh()
+        debugPrint("Loading map (30s)")
+
+        local selectedMap = SelectMap(wars[warId].votedMaps)
+        if not selectedMap then
+            NotifyCrewMembers(crew1, "crew:CrewWarNoMapSelected")
+            NotifyCrewMembers(crew2, "crew:CrewWarNoMapSelected")
+            return
         end
-    elseif #crew2.members > #crew1.members then
-        local diff = #crew2.members - #crew1.members 
-        for i = 1,diff do
-            TriggerClientEvent("crew:CrewWarNoMapSelected", crew2.members[#crew2.members])
-            crew2.members[#crew2.members] = nil
-        end
-    end
 
-    for k,v in pairs(crew1.members) do
-        wars[warId].needDone = wars[warId].needDone + 1
-    end
-    for k,v in pairs(crew2.members) do
-        wars[warId].needDone = wars[warId].needDone + 1
-    end
+        debugPrint("Map: " .. selectedMap .. " with highest votes")
 
-    local function RefreshWarsData()
-        for k,v in pairs(crew1.members) do
-            TriggerClientEvent("crew:CrewWarRefreshData", v.id, wars[warId])
-        end
-        for k,v in pairs(crew2.members) do
-            TriggerClientEvent("crew:CrewWarRefreshData", v.id, wars[warId])
-        end
-    end
+        NotifyCrewMembers(crew1, "crew:CrewWarLoadMap", selectedMap)
+        NotifyCrewMembers(crew2, "crew:CrewWarLoadMap", selectedMap)
 
+        Wait(30 * 1000)
+        wars[warId].refresh()
+        debugPrint("Choose car (15s)")
 
-    debugPrint("Starting crew war. Sending players to crew war lobby")
-    for k,v in pairs(crew1.members) do
-        SetPlayerInstance(v, wars[warId].instanceID)
-        TriggerClientEvent("crew:CrewWarAboutToStart", v.id, crew2.name, warId)
-    end
-    for k,v in pairs(crew2.members) do
-        SetPlayerInstance(v, wars[warId].instanceID)
-        TriggerClientEvent("crew:CrewWarAboutToStart", v.id, crew1.name, warId)
-    end
-    Wait(10*1000)
-    RefreshWarsData()
-    debugPrint("Starting map vote (30s)")
+        NotifyCrewMembers(crew1, "crew:CrewWarLoadVeh")
+        NotifyCrewMembers(crew2, "crew:CrewWarLoadVeh")
+        Wait(15 * 1000)
+        debugPrint("Starting crew war race !!")
 
-    for k,v in pairs(crew1.members) do
-        SetPlayerInstance(v, wars[warId].instanceID)
-        TriggerClientEvent("crew:CrewWarStartMapVote", v.id)
-    end
-    for k,v in pairs(crew2.members) do
-        SetPlayerInstance(v, wars[warId].instanceID)
-        TriggerClientEvent("crew:CrewWarStartMapVote", v.id)
-    end
+        NotifyCrewMembers(crew1, "crew:CrewWarStartRace")
+        NotifyCrewMembers(crew2, "crew:CrewWarStartRace")
 
-    Wait(30*1000) -- Map Load
-    RefreshWarsData()
-    debugPrint("Loading map (30s)")
+        -- Wait for race results
+        WaitForRaceResults(warId, crew1, crew2)
 
-    local map = ""
-    local mostVote = 0
-    print(json.encode(wars[warId].votedMaps))
-    for k,v in pairs(wars[warId].votedMaps) do
-        if v > mostVote then
-            mostVote = v
-            map = k
-        end
-    end
+        -- Teleport everyone back to lobby
+        wars[warId].refresh()
+        NotifyCrewMembers(crew1, "crew:CrewWarEndLobby")
+        NotifyCrewMembers(crew2, "crew:CrewWarEndLobby")
 
-    if map == nil or map == "" then
-        for k,v in pairs(crew1.members) do
-            TriggerClientEvent("crew:CrewWarNoMapSelected", v.id)
-        end
-        for k,v in pairs(crew2.members) do
-            TriggerClientEvent("crew:CrewWarNoMapSelected", v.id)
-        end
-        return
-    end
+        SetCrewInstance(crew1, 1)
+        SetCrewInstance(crew2, 1)
 
-    debugPrint("Map: "..map.." with "..mostVote.." vote")
+        -- Determine the winner and update ELO
+        DetermineWinnerAndUpdateELO(warId, crew1, crew2)
 
-    for k,v in pairs(crew1.members) do
-        TriggerClientEvent("crew:CrewWarLoadMap", v.id, map)
-    end
-    for k,v in pairs(crew2.members) do
-        TriggerClientEvent("crew:CrewWarLoadMap", v.id, map)
-    end
+        RefresKingDriftCrew()
+        RefreshOtherPlayerData()
 
-    Wait(30*1000)
-    RefreshWarsData()
-    debugPrint("Choose car (15s)")
-
-    for k,v in pairs(crew1.members) do
-        TriggerClientEvent("crew:CrewWarLoadVeh", v.id)
-    end
-    for k,v in pairs(crew2.members) do
-        TriggerClientEvent("crew:CrewWarLoadVeh", v.id)
-    end
-    Wait(15*1000)
-    debugPrint("Starting crew war race !!")
-    for k,v in pairs(crew1.members) do
-        TriggerClientEvent("crew:CrewWarStartRace", v.id)
-    end
-    for k,v in pairs(crew2.members) do
-        TriggerClientEvent("crew:CrewWarStartRace", v.id)
-    end
-
-
-    while wars[warId].waitingFirstPlayerFinish or wars[warId].needDone ~= wars[warId].done do
-        RefreshWarsData()
-        Wait(1000)
-    end
-
-    for k,v in pairs(crew1.members) do
-        TriggerClientEvent("crew:CrewWar60s", v.id)
-    end
-    for k,v in pairs(crew2.members) do
-        TriggerClientEvent("crew:CrewWar60s", v.id)
-    end
-
-    -- Notification, 60s to finish
-    debugPrint("Waiting everyone to finish")
-    local timer = GetGameTimer() + 60 * 1000 
-    print(timer, GetGameTimer())
-    while GetGameTimer() < timer and wars[warId].done < wars[warId].needDone do
-        print(timer, GetGameTimer(), wars[warId].done, wars[warId].needDone)
-        RefreshWarsData()
-        Wait(1000)
-    end
-
-
-
-    Wait(5000)
-
-    -- Teleport everyone back to lobby
-    RefreshWarsData()
-    for k,v in pairs(crew1.members) do
-        TriggerClientEvent("crew:CrewWarEndLobby", v.id)
-    end
-    for k,v in pairs(crew2.members) do
-        TriggerClientEvent("crew:CrewWarEndLobby", v.id)
-    end
-
-
-
-
-    for k,v in pairs(crew1.members) do
-        SetPlayerInstance(v, 1)
-    end
-    for k,v in pairs(crew2.members) do
-        SetPlayerInstance(v, 1)
-    end
-
-
-    if wars[warId].scores[crew1.name] > wars[warId].scores[crew2.name] then
-        crew[crew1.name].elo, crew[crew2.name].elo = CrewEloNewRating(crew[crew1.name].elo, crew[crew2.name].elo, 1, 0)
-        crew[crew1.name].win = crew[crew1.name].win + 1
-        crew[crew2.name].loose = crew[crew2.name].loose + 1
-        TriggerClientEvent("FeedM:showNotification", -1, "Crew ~b~".. crew1.name .."~s~ has just won a crew war against crew ~b~".. crew2.name .." ~s~with ~o~".. GroupDigits(wars[warId].scores[crew1.name]) .." points !", 10000, "info")
-
-        SendTextToWebhook("crew_war", 0x5cffe1, "CREW WARS RESULT", "Crew ``".. crew1.name .."`` has just won a crew war against crew ``".. crew2.name .."`` with ".. GroupDigits(wars[warId].scores[crew1.name]) .." points vs "..GroupDigits(wars[warId].scores[crew2.name]) .." points !\n``(+ ".. GroupDigits(wars[warId].scores[crew1.name] - wars[warId].scores[crew2.name]) .." )``")
-    else
-        crew[crew2.name].elo, crew[crew1.name].elo = CrewEloNewRating(crew[crew2.name].elo, crew[crew1.name].elo, 1, 0)
-        crew[crew2.name].win = crew[crew2.name].win + 1
-        crew[crew1.name].loose = crew[crew1.name].loose + 1
-        TriggerClientEvent("FeedM:showNotification", -1, "Crew ~b~".. crew2.name .."~s~ has just won a crew war against crew ~b~".. crew1.name .." ~s~with ~o~".. GroupDigits(wars[warId].scores[crew2.name]) .." points !", 10000, "info")
-
-        SendTextToWebhook("crew_war", 0x5cffe1, "CREW WARS RESULT", "Crew ``".. crew2.name .."`` has just won a crew war against crew ``".. crew1.name .."`` with ".. GroupDigits(wars[warId].scores[crew2.name]) .." points vs "..GroupDigits(wars[warId].scores[crew1.name]) .." points !\n``(+ ".. GroupDigits(wars[warId].scores[crew2.name] - wars[warId].scores[crew1.name]) .." )``")
-        
-    end
-
-    RefresKingDriftCrew()
-    RefreshOtherPlayerData()
+        -- Clean up the war data
+        wars[warId] = nil
     end)
 end
 
-function AddCrewToMachmaking(crewName)
-    if matchmaking[crewName] == nil then
+-- Helper function to notify crew members
+function NotifyCrewMembers(crew, event, ...)
+    for _, member in pairs(crew.members) do
+        TriggerClientEvent(event, member.id, ...)
+    end
+end
+
+-- Helper function to set player instances
+function SetCrewInstance(crew, instanceID)
+    for _, member in pairs(crew.members) do
+        SetPlayerInstance(member, instanceID)
+    end
+end
+
+-- Helper function to balance teams
+function BalanceTeams(crew1, crew2)
+    local diff = #crew1.members - #crew2.members
+    if diff > 0 then
+        for i = 1, diff do
+            TriggerClientEvent("crew:CrewWarNoMapSelected", crew1.members[#crew1.members].id)
+            crew1.members[#crew1.members] = nil
+        end
+    elseif diff < 0 then
+        for i = 1, -diff do
+            TriggerClientEvent("crew:CrewWarNoMapSelected", crew2.members[#crew2.members].id)
+            crew2.members[#crew2.members] = nil
+        end
+    end
+end
+
+-- Helper function to select the map
+function SelectMap(votedMaps)
+    local selectedMap, mostVotes = nil, 0
+    for map, votes in pairs(votedMaps) do
+        if votes > mostVotes then
+            mostVotes = votes
+            selectedMap = map
+        end
+    end
+    return selectedMap
+end
+
+-- Helper function to wait for race results
+function WaitForRaceResults(warId, crew1, crew2)
+    while wars[warId].waitingFirstPlayerFinish or wars[warId].needDone ~= wars[warId].done do
+        wars[warId].refresh()
+        Wait(1000)
+    end
+
+    local timer = GetGameTimer() + 60 * 1000 
+    while GetGameTimer() < timer and wars[warId].done < wars[warId].needDone do
+        wars[warId].refresh()
+        Wait(1000)
+    end
+end
+
+-- Helper function to determine the winner and update ELO
+function DetermineWinnerAndUpdateELO(warId, crew1, crew2)
+    local crew1Score = wars[warId].scores[crew1.name]
+    local crew2Score = wars[warId].scores[crew2.name]
+
+    if crew1Score > crew2Score then
+        UpdateEloAndStats(crew1, crew2, crew1Score, crew2Score)
+        NotifyWinner(crew1, crew2, crew1Score)
+    else
+        UpdateEloAndStats(crew2, crew1, crew2Score, crew1Score)
+        NotifyWinner(crew2, crew1, crew2Score)
+    end
+end
+
+-- Helper function to update ELO and stats
+function UpdateEloAndStats(winningCrew, losingCrew, winningScore, losingScore)
+    crew[winningCrew.name].elo, crew[losingCrew.name].elo = CrewEloNewRating(
+        crew[winningCrew.name].elo,
+        crew[losingCrew.name].elo,
+        1, 0
+    )
+    crew[winningCrew.name].win = crew[winningCrew.name].win + 1
+    crew[losingCrew.name].loose = crew[losingCrew.name].loose + 1
+end
+
+-- Helper function to notify winner
+function NotifyWinner(winningCrew, losingCrew, winningScore)
+    TriggerClientEvent("FeedM:showNotification", -1, "Crew ~b~".. winningCrew.name .."~s~ has just won a crew war against crew ~b~".. losingCrew.name .." ~s~with ~o~".. GroupDigits(winningScore) .." points !", 10000, "info")
+    SendTextToWebhook("crew_war", 0x5cffe1, "CREW WARS RESULT", "Crew ``".. winningCrew.name .."`` has just won a crew war against crew ``".. losingCrew.name .."`` with ".. GroupDigits(winningScore) .." points vs "..GroupDigits(wars[warId].scores[losingCrew.name]) .." points !\n``(+ ".. GroupDigits(wars[warId].scores[winningCrew.name] - wars[warId].scores[losingCrew.name]) .." )``")
+end
+
+function AddCrewToMatchmaking(crewName)
+    if not matchmaking[crewName] then
         matchmaking[crewName] = {
             name = crewName,
             members = {}
         }
-        TriggerClientEvent("FeedM:showNotification", -1, "Crew ~b~".. crewName .."~s~ joined crew war matchmaking", 10000, "info")
-
+        TriggerClientEvent("FeedM:showNotification", -1, "Crew ~b~" .. crewName .. "~s~ joined crew war matchmaking", 10000, "info")
     end
 end
 
 function AddCrewMemberToMatchmaking(crewName, source)
-    if matchmaking[crewName] == nil then
-        AddCrewToMachmaking() 
+    if not matchmaking[crewName] then
+        AddCrewToMatchmaking(crewName)
     end
 
-    local found = false
-    local key = 0
-    for k,v in pairs(matchmaking[crewName].members) do
+    local crew = matchmaking[crewName]
+    local memberIndex = nil
+
+    for k, v in pairs(crew.members) do
         if v.id == source then
-            found = true
-            key = k
+            memberIndex = k
+            break
         end
     end
-    if not found then
-        table.insert(matchmaking[crewName].members, {id = source, name = GetPlayerName(source), exp = player[source].exp})
-        for k,v in pairs(matchmaking[crewName].members) do
-            TriggerClientEvent("crew:CrewWarRefreshCrewData", v.id, matchmaking[crewName].members, true)
-        end
+
+    if memberIndex then
+        -- Remove member from matchmaking
+        table.remove(crew.members, memberIndex)
+        TriggerClientEvent("crew:CrewWarRefreshCrewData", source, crew.members, false)
     else
-        matchmaking[crewName].members[key] = nil
-        TriggerClientEvent("crew:CrewWarRefreshCrewData", source, matchmaking[crewName].members, false)
-        if #matchmaking[crewName].members == 0 then
-            matchmaking[crewName] = nil
-        else
-            for k,v in pairs(matchmaking[crewName].members) do
-                TriggerClientEvent("crew:CrewWarRefreshCrewData", v.id, matchmaking[crewName].members, true)
+        -- Add member to matchmaking
+        table.insert(crew.members, { id = source, name = GetPlayerName(source), exp = player[source].exp })
+        NotifyAllCrewMembers(crew)
+    end
+
+    -- If no members left in crew, remove crew from matchmaking
+    if #crew.members == 0 then
+        matchmaking[crewName] = nil
+    end
+end
+
+function NotifyAllCrewMembers(crew)
+    for _, member in pairs(crew.members) do
+        TriggerClientEvent("crew:CrewWarRefreshCrewData", member.id, crew.members, true)
+    end
+end
+
+function RemoveInactivePlayers()
+    for crewName, crew in pairs(matchmaking) do
+        for i = #crew.members, 1, -1 do
+            local member = crew.members[i]
+            if GetPlayerPing(member.id) == 0 then
+                table.remove(crew.members, i)
             end
         end
-
+        -- If no members left, remove crew from matchmaking
+        if #crew.members == 0 then
+            matchmaking[crewName] = nil
+        end
     end
 end
 
 function FindRandomMatch()
-    local possibleMathCount = 0
-    for k,v in pairs(matchmaking) do
-        for j,i in pairs(v.members) do
-            if GetPlayerPing(i.id) == 0 then
-                AddCrewMemberToMatchmaking(k, i.id)
-            end
-        end
+    RemoveInactivePlayers()
+
+    local crewNames = {}
+    for crewName in pairs(matchmaking) do
+        table.insert(crewNames, crewName)
     end
 
-    for k,v in pairs(matchmaking) do
-        possibleMathCount = possibleMathCount + 1
-    end
+    if #crewNames > 1 then
+        local random1Index = math.random(1, #crewNames)
+        local crew1Name = crewNames[random1Index]
 
+        local random2Index
+        repeat
+            random2Index = math.random(1, #crewNames)
+        until random2Index ~= random1Index
+        local crew2Name = crewNames[random2Index]
 
-    if possibleMathCount > 1 then
-        local random1 = math.random(1, possibleMathCount)
+        local crew1 = matchmaking[crew1Name]
+        local crew2 = matchmaking[crew2Name]
 
-        local count = 1
-        for k,v in pairs(matchmaking) do
-            if count == random1 then
-                random1 = k
-            end
-            count = count + 1
-        end
+        -- Notify players that they are no longer in matchmaking
+        NotifyAllCrewMembers(crew1)
+        NotifyAllCrewMembers(crew2)
 
-        local random2 = math.random(1, possibleMathCount)
-
-        print("Random1 gotten, looking for random2")
-        local count = 1
-        for k,v in pairs(matchmaking) do
-            if count == random2 then
-                random2 = k
-            end
-            count = count + 1
-        end
-        while random1 == random2 do
-            local count = 1
-            random2 = math.random(1, possibleMathCount)
-            print(random2)
-            for k,v in pairs(matchmaking) do
-                if count == random2 then
-                    random2 = k
-                end
-                count = count + 1
-            end
-            Wait(1)
-        end
-
-        for k,v in pairs(matchmaking[random1].members) do
-            TriggerClientEvent("crew:CrewWarRefreshCrewData", v.id, matchmaking[random1].members, false)
-        end
-        for k,v in pairs(matchmaking[random2].members) do
-            TriggerClientEvent("crew:CrewWarRefreshCrewData", v.id, matchmaking[random2].members, false)
-        end
-
-        print(random1, random2)
-
-        local crew1 = matchmaking[random1]
-        local crew2 = matchmaking[random2]
-        matchmaking[random1] = nil
-        matchmaking[random2] = nil
+        -- Start the war between two crews
         StartWarsBetweenCrew(crew1, crew2)
+
+        -- Remove matched crews from matchmaking
+        matchmaking[crew1Name] = nil
+        matchmaking[crew2Name] = nil
     end
 end
+
+Citizen.CreateThread(function()
+    Wait(5000)
+    while true do
+        FindRandomMatch()
+        Wait(20 * 1000)
+    end
+end)
 
 
 Citizen.CreateThread(function()
     Wait(5000)
     while true do
         FindRandomMatch()
-        Wait(20*1000)
+        Wait(20 * 1000)
     end
 end)
-
 
 RegisterNetEvent("crew:CrewWarsVoteForMap")
 AddEventHandler("crew:CrewWarsVoteForMap", function(map, warID)
