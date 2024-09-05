@@ -91,7 +91,7 @@ Citizen.CreateThread(function()
         for k,v in pairs(player) do
 
             if GetPlayerPing(k) == 0 then
-                player[source] = nil
+                player[k] = nil
             else
                 if v.needSave then
                     SavePlayer(k)
