@@ -82,11 +82,7 @@ end
 Citizen.CreateThread(function()
     local db = rockdb:new()
     local data = db:GetInt("PlayerCount")
-    if data ~= nil then
-        PlayerCount = data
-    else
-        PlayerCount = 1
-    end
+    PlayerCount = data ~= nil and data or 1
     while true do
         for k,v in pairs(player) do
 
