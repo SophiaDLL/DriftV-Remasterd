@@ -113,7 +113,7 @@ CREATE TABLE `crews` (
 ## 🙏 Credits
 - **Original Creator**: [Rubylium](https://github.com/Rubylium)
 - **Original Repository**: [DriftV](https://github.com/Rubylium/DriftV)
-- **Remastered By**: [LaureLNWK](https://github.com/LaureLNWK)
+- **Remastered By**: [SophiaDLL](https://github.com/SophiaDLL)
 
 ---
 
