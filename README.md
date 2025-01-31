@@ -47,45 +47,43 @@ ensure IPL_Loader
 DriftV Remastered uses a MySQL database to store player and crew data. Follow these steps to set up the database:
 
 ```mysql
-CREATE DATABASE IF NOT EXISTS `driftv` DEFAULT CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci;
+CREATE DATABASE IF NOT EXISTS `driftv` /*!40100 DEFAULT CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci */;
 USE `driftv`;
 
--- Table structure for table `kvp`
+-- Listage de la structure de table driftv. kvp
 CREATE TABLE IF NOT EXISTS `kvp` (
-  `key` VARCHAR(255) NOT NULL,
-  `value` TEXT DEFAULT NULL,
+  `key` varchar(255) NOT NULL,
+  `value` text DEFAULT NULL,
   PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
--- Table structure for table `players`
-CREATE TABLE IF NOT EXISTS `players` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `license` VARCHAR(255) NOT NULL,
-  `season` VARCHAR(255) NOT NULL,
-  `pName` VARCHAR(255) NOT NULL,
-  `money` INT NOT NULL DEFAULT 0,
-  `driftPoint` INT NOT NULL DEFAULT 0,
-  `exp` INT NOT NULL DEFAULT 0,
-  `level` INT NOT NULL DEFAULT 0,
-  `cars` JSON NOT NULL,
-  `succes` JSON NOT NULL,
-  `crew` VARCHAR(255) NOT NULL DEFAULT 'None',
-  `crewOwner` BOOLEAN NOT NULL DEFAULT FALSE,
-  UNIQUE (`license`, `season`)
+CREATE TABLE `players` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `license` VARCHAR(255) NOT NULL,
+    `season` VARCHAR(255) NOT NULL,
+    `pName` VARCHAR(255) NOT NULL,
+    `money` INT NOT NULL DEFAULT 0,
+    `driftPoint` INT NOT NULL DEFAULT 0,
+    `exp` INT NOT NULL DEFAULT 0,
+    `level` INT NOT NULL DEFAULT 0,
+    `cars` JSON NOT NULL,
+    `succes` JSON NOT NULL,
+    `crew` VARCHAR(255) NOT NULL DEFAULT 'None',
+    `crewOwner` BOOLEAN NOT NULL DEFAULT FALSE,
+    UNIQUE (`license`, `season`)
 );
 
--- Table structure for table `crews`
-CREATE TABLE IF NOT EXISTS `crews` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `tag` VARCHAR(255) NOT NULL,
-  `name` VARCHAR(255) NOT NULL UNIQUE,
-  `memberCount` INT NOT NULL DEFAULT 1,
-  `totalPoints` INT NOT NULL DEFAULT 0,
-  `win` INT NOT NULL DEFAULT 0,
-  `loose` INT NOT NULL DEFAULT 0,
-  `elo` INT NOT NULL DEFAULT 1000,
-  `members` JSON NOT NULL,
-  `rank` INT NOT NULL DEFAULT 500
+CREATE TABLE `crews` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `tag` VARCHAR(255) NOT NULL,
+    `name` VARCHAR(255) NOT NULL UNIQUE,
+    `memberCount` INT NOT NULL DEFAULT 1,
+    `totalPoints` INT NOT NULL DEFAULT 0,
+    `win` INT NOT NULL DEFAULT 0,
+    `loose` INT NOT NULL DEFAULT 0,
+    `elo` INT NOT NULL DEFAULT 1000,
+    `members` JSON NOT NULL,
+    `rank` INT NOT NULL DEFAULT 500
 );
 ```
 
