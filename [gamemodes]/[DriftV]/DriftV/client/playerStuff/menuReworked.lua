@@ -77,6 +77,7 @@ local vehicleOptionsExtra =  RageUI.CreateSubMenu(vehicleOptions, "DriftV Remast
 local vehicleOptionsLivery =  RageUI.CreateSubMenu(vehicleOptions, "DriftV Remastered", "Welcome to you're Drift Haven")
 local maps =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
 local camera =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
+local Spectate =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
 local instance =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
 local succes =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
 local time =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
@@ -94,6 +95,7 @@ vehicleOptionsExtra.WidthOffset = 100.0
 vehicleOptionsLivery.WidthOffset = 100.0
 maps.WidthOffset = 100.0
 camera.WidthOffset = 100.0
+Spectate.WidthOffset = 100.0
 instance.WidthOffset = 100.0
 succes.WidthOffset = 100.0
 time.WidthOffset = 100.0
@@ -164,6 +166,7 @@ function OpenMainMenu()
 
                     
                     RageUI.Button('-----   MISC -----', nill, {RightLabel = ""}, false, {}, nill);
+                    RageUI.Button('→    Spectate', nil, {RightLabel = ">"}, true, {}, Spectate);
                     RageUI.Button('→    Camera', "Available only inside a vehicle", {RightLabel = ">"}, p:isInVeh(), {}, camera);
                     RageUI.Button('→    Time Of Day', "Change your time", {RightLabel = ">"}, not p:IsInGarage(), {}, time);
                     RageUI.Button("→    Toggle freecam", "", {}, not p:IsInGarage(), {
@@ -172,6 +175,146 @@ function OpenMainMenu()
                         end,
                     });
                 end)
+
+            -- BELOW HERE IS THE SPECTATE SYSTEM (WIP)
+
+            local spectating = false
+            local targetPed = nil
+            
+            function SpectatePlayer(targetPlayer)
+                local playerPed = PlayerPedId()
+                targetPed = GetPlayerPed(GetPlayerFromServerId(targetPlayer))
+            
+                if targetPed == 0 then
+                    ShowNotification("Player not found!")
+                    return
+                end
+            
+                if targetPed == playerPed then
+                    ShowNotification("You cannot spectate yourself!")
+                    return
+                end
+            
+                NetworkSetInSpectatorMode(true, targetPed)
+                spectating = true
+            
+                ShowNotification("Spectating player: " .. GetPlayerName(targetPlayer))
+                CreateStopSpectateThread()
+            end
+            
+            function StopSpectating()
+                NetworkSetInSpectatorMode(false, PlayerPedId())
+                spectating = false
+                ShowNotification("Stopped spectating.")
+            end
+            
+            function CreateStopSpectateThread()
+                Citizen.CreateThread(function()
+                    while spectating do
+                        Citizen.Wait(1)
+                        if IsControlJustPressed(0, 177) then 
+                            StopSpectating()
+                            break
+                        end
+                    end
+                end)
+            end
+            
+            RageUI.IsVisible(Spectate, function()
+                RageUI.Separator("---PLAYERS---")
+            
+                local myId = GetPlayerServerId(PlayerId())
+            
+                for _, player in ipairs(GetActivePlayers()) do
+                    local playerId = GetPlayerServerId(player)
+            
+                    if playerId ~= myId then
+                        RageUI.Button(GetPlayerName(player), "Spectate this player", {RightLabel = "→"}, true, {
+                            onSelected = function()
+                                SpectatePlayer(playerId)
+                            end
+                        })
+                    end
+                end
+            
+                if spectating then
+                    RageUI.Button("Stop Spectating", "Return to normal mode", {RightLabel = "→"}, true, {
+                        onSelected = function()
+                            StopSpectating()
+                        end
+                    })
+                end
+            end)
+            
+            
+            
+            
+            
+
+
+            --  local spectating = false
+            --  local targetPed = nil
+
+            --  function SpectatePlayer(targetPlayer)
+            --      local playerPed = PlayerPedId()
+            --      local targetPed = GetPlayerPed(GetPlayerFromServerId(targetPlayer))
+
+            --      if targetPed == 0 then
+            --          ShowNotification("Player not found!")
+            --          return
+            --      end
+
+            --      if targetPed == playerPed then
+            --          ShowNotification("You cannot spectate yourself!")
+            --          return
+            --      end
+
+            --      NetworkSetInSpectatorMode(true, targetPed)
+            --      spectating = true
+
+            --      ShowNotification("Spectating player: " .. GetPlayerName(targetPlayer))
+            --  end
+
+            --  function StopSpectating()
+            --      NetworkSetInSpectatorMode(false, PlayerPedId())
+            --      spectating = false
+            --      ShowNotification("Stopped spectating.")
+            --  end
+
+            --  Citizen.CreateThread(function()
+            --      while true do
+            --          Citizen.Wait(0)
+            --          if spectating and IsControlJustPressed(0, 177) then 
+            --              StopSpectating()
+            --          end
+            --      end
+            --  end)
+
+            --  RageUI.IsVisible(Spectate, function()
+            --      RageUI.Separator("---PLAYERS---")
+
+            --      for _, player in ipairs(GetActivePlayers()) do
+            --          local playerId = GetPlayerServerId(player)
+            --          local playerName = GetPlayerName(player)
+
+            --          if playerId ~= GetPlayerServerId(PlayerId()) then
+            --              RageUI.Button(playerName, "Spectate this player", {RightLabel = "→"}, true, {
+            --                  onSelected = function()
+            --                      SpectatePlayer(playerId)
+            --                  end
+            --              })
+            --          end
+            --      end
+
+            --      if spectating then
+            --          RageUI.Button("Stop Spectating", "Return to normal mode", {RightLabel = "→"}, true, {
+            --              onSelected = function()
+            --                  StopSpectating()
+            --              end
+            --          })
+            --      end
+            --  end)
+
 
                 RageUI.IsVisible(crew, function()
                     RageUI.Button("Crew Ranking", nil, {}, true, {}, crewRankings);
@@ -247,6 +390,7 @@ function OpenMainMenu()
                     end
                 end)
 
+                
                 RageUI.IsVisible(information, function()
                     RageUI.Button("Money: "..GroupDigits(tostring(p:GetMoney())) .. "$", nil, {}, true, {}); -- Displays Local Player Current Balance
                     RageUI.Button("Current Level: "..GroupDigits(tostring(p:currentLevel())), nil, {}, true, {}); -- Displays Local Player Current level
