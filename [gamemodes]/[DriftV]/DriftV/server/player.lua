@@ -177,6 +177,19 @@ RegisterSecuredNetEvent(Events.setPassive, function(status)
     TriggerClientEvent(Events.setPassive, -1, inPassive)
 end)
 
+RegisterNetEvent("drift:FetchVehicles")
+AddEventHandler("drift:FetchVehicles", function()
+    local source = source
+    local license = GetLicense(source)
+    local vehicles = MySQL.scalar.await('SELECT cars FROM players WHERE license = ?', {license})
+    if vehicles then
+        local carList = json.decode(vehicles)
+        TriggerClientEvent("drift:ReceiveVehicles", source, carList)
+    else
+        TriggerClientEvent("drift:ReceiveVehicles", source, {})
+    end
+end)
+
 RegisterSecuredNetEvent(Events.buyVeh, function(price, label, model)
     if price <= player[source].money and price > 0 then
         player[source].money = player[source].money - price

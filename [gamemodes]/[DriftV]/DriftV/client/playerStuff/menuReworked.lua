@@ -148,22 +148,28 @@ function OpenMainMenu()
                         });
 
                     end
+                    RageUI.Button('-----   Main Options -----', nill, {RightLabel = ""}, false, {}, nill);
                     RageUI.Button('→    My Vehicles', nil, {RightLabel = ">"}, not p:IsInGarage(), {}, vehicle);
                     RageUI.Button('→    Vehicle options', "Available only inside a vehicle", {RightLabel = ">"}, p:isInVeh(), {}, vehicleOptions);
-                    RageUI.Button('→    My information/stats', nil, {RightLabel = ">"}, true, {}, information);
                     RageUI.Button('→    Teleports', nil, {RightLabel = ">"}, not p:IsInGarage(), {}, maps);
-                    RageUI.Button('→    Camera', "Available only inside a vehicle", {RightLabel = ">"}, p:isInVeh(), {}, camera);
-                    RageUI.Button('→    Settings', nil, {RightLabel = ">"}, true, {}, settings);
-                    RageUI.Button('→    Achievements', "Your completed achievements", {RightLabel = ">"}, true, {}, succes);
-                    RageUI.Button('→    Time Of Day', "Change your time", {RightLabel = ">"}, not p:IsInGarage(), {}, time);
                     RageUI.Button('→    Manage your crew', "Change your time", {RightLabel = animatedTag.."  ~y~NEW!"}, true, {}, crew);
+                    RageUI.Button('→    Settings', nil, {RightLabel = ">"}, true, {}, settings);
+
+                    RageUI.Button('-----   My Stats -----', nill, {RightLabel = ""}, false, {}, nill);
+                    RageUI.Button('→    My information/stats', nil, {RightLabel = ">"}, true, {}, information);
+                    RageUI.Button('→    Achievements', "Your completed achievements", {RightLabel = ">"}, true, {}, succes);
+
+                    
+                    RageUI.Button('-----   MISC -----', nill, {RightLabel = ""}, false, {}, nill);
+                    RageUI.Button('→    Camera', "Available only inside a vehicle", {RightLabel = ">"}, p:isInVeh(), {}, camera);
+                    RageUI.Button('→    Time Of Day', "Change your time", {RightLabel = ">"}, not p:IsInGarage(), {}, time);
                     RageUI.Button("→    Toggle freecam", "", {}, not p:IsInGarage(), {
                         onSelected = function()
                             ToogleNoClip()
                         end,
                     });
                 end)
-
+-- RageUI.Button('→   THIS IS  A TEST';
                 RageUI.IsVisible(crew, function()
                     RageUI.Button("Crew Ranking", nil, {}, true, {}, crewRankings);
                     if p:getCrew() == "None" then
