@@ -1,5 +1,5 @@
 local garagePos = vector3(994.5925, -3002.594, -39.64699)
-local garageLeavePos = vector3(994.5925, -3002.594, -39.64699)
+local garageLeavePos = vector3(994.5925, -3002.594, -39.64699) --
 local oldPlayerPos = vector3(0.0, 0.0, 0.0)
 local oldPlayerHeading = 100.0
 local garageIpl = "imp_impexp_interior_placement_interior_1_impexp_intwaremed_milo_"
@@ -160,7 +160,7 @@ function InitGarageFunction()
         while p:IsInGarage() do
             if closetDst <= 3.0 then
                 if not p:isInVeh() then
-                    ShowHelpNotification("Press ~INPUT_CONTEXT~ to change vehicle customs")
+                    ShowHelpNotification("Press ~INPUT_CONTEXT~ to customize you're Vehicle")
                     if IsControlJustReleased(0, 38) then
                         OpenCustomMenu(closetCar.entity:getEntityId(), closetCar.model)
                     end

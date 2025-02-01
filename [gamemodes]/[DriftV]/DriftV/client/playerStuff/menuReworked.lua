@@ -239,9 +239,11 @@ function OpenMainMenu()
                 end)
 
                 RageUI.IsVisible(information, function()
-                    RageUI.Button("Money: "..GroupDigits(tostring(p:GetMoney())) .. "$", nil, {}, true, {});
-                    RageUI.Button("Total Drift points : "..GroupDigits(tostring(math.floor(p:GetDrift()))) , nil, {}, true, {});
-                    RageUI.Button("Session Drift points : "..GroupDigits(tostring(math.floor(p:sDriftPoint()))) , nil, {}, true, {});
+                    RageUI.Button("Money: "..GroupDigits(tostring(p:GetMoney())) .. "$", nil, {}, true, {}); -- Displays Local Player Current Balance
+                    RageUI.Button("Current Level: "..GroupDigits(tostring(p:currentLevel())), nil, {}, true, {}); -- Displays Local Player Current level
+                    RageUI.Button("Total Drift points : "..GroupDigits(tostring(math.floor(p:GetDrift()))) , nil, {}, true, {}); -- Displays Local Player Total ammount of DriftPoints
+                    RageUI.Button("Session Drift points : "..GroupDigits(tostring(math.floor(p:sDriftPoint()))) , nil, {}, true, {}); -- Displays Local Player Drift points (CURRENT SESSION)
+                    RageUI.Button("You're Crew: "..(p:PlayerCrew() or "none"), nil, {}, true, {}); -- Displays Local Player Crew
                 end)
 
                 RageUI.IsVisible(vehicle, function()

@@ -16,15 +16,14 @@ function InitPlayer(source)
             succes = {},
             needSave = false,
             crew = "None",
-            crewOwner = false,
-            garage_slots = 2 -- Default garage slots
+            crewOwner = false
         }
         player[source] = data
         pCrew[source] = "None"
 
         -- Insert the new player data into the database
-        MySQL.insert.await('INSERT INTO `players` (license, season, pName, money, driftPoint, exp, level, cars, succes, crew, crewOwner, garage_slots) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', {
-            data.license, saison, data.pName, data.money, data.driftPoint, data.exp, data.level, json.encode(player[source].cars), json.encode(data.succes), data.crew, data.crewOwner, data.garage_slots
+        MySQL.insert.await('INSERT INTO `players` (license, season, pName, money, driftPoint, exp, level, cars, succes, crew, crewOwner) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', {
+            data.license, saison, data.pName, data.money, data.driftPoint, data.exp, data.level, json.encode(player[source].cars), json.encode(data.succes), data.crew, data.crewOwner
         })
         -- json.encode(data.cars)
         SavePlayer(source)
@@ -50,7 +49,6 @@ function InitPlayer(source)
     
         debugPrint("Loaded player from database (" .. data.money .. " " .. data.driftPoint .. ")")
     end
-    
 
     PlayerCount = PlayerCount + 1
     local source = tonumber(source)
@@ -84,12 +82,11 @@ end
 function SavePlayer(source)
     local license = GetLicense(source)
     local data = player[source]
-    MySQL.update.await('UPDATE `players` SET `pName` = ?, `money` = ?, `driftPoint` = ?, `exp` = ?, `level` = ?, `cars` = ?, `succes` = ?, `crew` = ?, `crewOwner` = ?, `garage_slots` = ? WHERE `license` = ? AND `season` = ?', {
-        data.pName, data.money, data.driftPoint, data.exp, data.level, json.encode(data.cars), json.encode(data.succes), data.crew, data.crewOwner, data.garage_slots, license, saison
+    MySQL.update.await('UPDATE `players` SET `pName` = ?, `money` = ?, `driftPoint` = ?, `exp` = ?, `level` = ?, `cars` = ?, `succes` = ?, `crew` = ?, `crewOwner` = ? WHERE `license` = ? AND `season` = ?', {
+        data.pName, data.money, data.driftPoint, data.exp, data.level, json.encode(data.cars), json.encode(data.succes), data.crew, data.crewOwner, license, saison
     })
     debugPrint("Player ("..source..") saved")
     player[source].needSave = false
-    -- TriggerServerEvent("drift:updateGarageSlots", GetPlayerServerId(PlayerId()), newSlots)
 end
 
 
@@ -193,43 +190,6 @@ RegisterSecuredNetEvent(Events.buyVeh, function(price, label, model)
     end
 end)
 
-RegisterNetEvent("drift:updateGarageSlots")
-AddEventHandler("drift:updateGarageSlots", function(playerId, newSlots)
-    local player = GetPlayerFromId(playerId)
-    if player then
-        -- Update the database with the new garage slots
-        MySQL.Async.execute('UPDATE players SET garage_slots = @garage_slots WHERE identifier = @identifier', {
-            ['@garage_slots'] = newSlots,
-            ['@identifier'] = player.identifier
-        }, function(rowsChanged)
-            if rowsChanged > 0 then
-                -- Notify the client that the update was successful
-                TriggerClientEvent("drift:setGarageSlots", playerId, newSlots)
-            else
-                print("Failed to update garage slots for player: " .. player.identifier)
-            end
-        end)
-    end
-end)
-
-
-
-
-RegisterNetEvent("drift:FetchVehicles")
-AddEventHandler("drift:FetchVehicles", function()
-    local source = source
-    local license = GetLicense(source)
-    local vehicles = MySQL.scalar.await('SELECT cars FROM players WHERE license = ?', {license})
-
-    if vehicles then
-        local carList = json.decode(vehicles)
-        TriggerClientEvent("drift:ReceiveVehicles", source, carList)
-    else
-        TriggerClientEvent("drift:ReceiveVehicles", source, {})
-    end
-end)
-
-
 RegisterSecuredNetEvent(Events.sellVeh, function(vehicleModel)
     local source = source
     local playerCars = player[source].cars
@@ -259,11 +219,6 @@ RegisterSecuredNetEvent(Events.sellVeh, function(vehicleModel)
         end
     end
 end)
-
-
-
-
-
 
 RegisterSecuredNetEvent(Events.refreshCars, function(cars)
     player[source].cars = cars

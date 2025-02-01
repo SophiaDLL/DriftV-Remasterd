@@ -9,7 +9,7 @@ local function uuid()
 end
 
 Events = {
-    pay = "drift:Pay",  -- Static event name
+    pay = "drift:Pay",  -- Pay event for server
     busted = "drift:GotBusted",
     refreshCars = "drift:UpdateCars",
     buyVeh = "drift:BuyVehicle",
