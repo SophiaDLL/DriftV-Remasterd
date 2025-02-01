@@ -52,4 +52,36 @@ $(function () {
 		e.preventDefault();
 		$.post('https://driftV/joinServer', JSON.stringify(test = false));
 	});
+
+  $(document).ready(function() {
+    $(".clickJoinButton").click(function() {
+        // Hide game logo
+        $(".game-logo-text-1").fadeOut();
+        $(".game-logo-text-2").fadeOut();
+        $("nav").fadeOut();
+        $("#containerJoin").fadeOut();
+        $(".version").fadeOut(); 
+    });
+  
+    $(".seasonButton").click(function() {
+        $(".game-logo-text-1").addClass("hiddenContent");
+        $(".game-logo-text-2").addClass("hiddenContent");
+        $("nav").addClass("hiddenContent");
+        $("#containerJoin").addClass("hiddenContent");
+        $("#containerSucces").addClass("hiddenContent");
+        $(".buttonContainer").addClass("hiddenContent");
+        $("#devUpdateModal").fadeIn();
+    });
+  
+    $(".closeButton").click(function() {
+        $("#devUpdateModal").fadeOut();
+        $(".game-logo-text-1").removeClass("hiddenContent");
+        $(".game-logo-text-2").removeClass("hiddenContent");
+        $("nav").removeClass("hiddenContent");
+        $("#containerJoin").removeClass("hiddenContent");
+        $("#containerSucces").removeClass("hiddenContent");
+        $(".buttonContainer").removeClass("hiddenContent");
+    });
+  });
 });
+

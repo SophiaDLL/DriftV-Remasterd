@@ -26,10 +26,6 @@
   padding: 0;
 }
 
-body {
-  /* background-color: gray; */
-}
-
 #container {
   display: none;
 }
@@ -130,10 +126,6 @@ body {
   width: 300px
 }
 
-#containerJoin {
-  /* display: none; */
-}
-
 .joinButton {
   position: absolute;
   bottom: 10%;
@@ -142,4 +134,139 @@ body {
 
 .navbar{
   visibility: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Orbitron', sans-serif;
+  background: url('images/maxresdefault.jpg') no-repeat center center/cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.game-logo-text-1 {
+  position: absolute;
+  font-size: 70px;
+  left: 75%;
+  bottom: 13%;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+  text-shadow: 4px 4px 6px #ff007f;
+  text-align: center;
+}
+
+.game-logo-text-2 {
+  position: absolute;
+  font-size: 60px;
+  left: 70%;
+  bottom: 8%;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #ff007f;
+  text-shadow: 4px 4px 6px #ffffff;
+  text-align: center;
+}
+
+
+#containerJoin {
+  position: absolute;
+  left: 80%;
+  bottom: 5%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttonContainer button {
+  font-size: 22px;
+  border-radius: 20px;
+  right: 90%;
+  background: #ffffff00;
+  color: #ffffff;
+  font-weight: bold;
+  border: 2px solid #ff007f;
+  transition: 0.3s;
+  padding: 0px 20px;
+  width: 300px; 
+  height: 40px;
+  text-align: center; 
+}
+
+.buttonContainer button:hover {
+  background: white;
+  color: black;
+}
+
+nav {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+#devUpdateModal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+  width: 80%;
+  max-width: 600px;
+}
+
+#devUpdateModal h4 {
+  text-align: center;
+}
+
+#devUpdateModal .modal-content {
+  margin: 10px 0;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+#devUpdateModal .closeButton {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #ff007f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#devUpdateModal .closeButton:hover {
+  background-color: #ff4c8f;
+}
+
+.hiddenContent {
+  display: none;
+}
+
+.version {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  color: white;
+  font-size: 14px;
+  font-weight: normal;
+  font-family: sans-serif;
+  text-shadow: 2px 2px 6px #ff4c8f;
 }

@@ -70,6 +70,7 @@ local hours = {
 
 local main = RageUI.CreateMenu("DriftV Remastered", "Welcome to you're Drift Haven")
 local information =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
+-- local vStats =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
 local vehicle =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
 local vehicleOptions =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
 local vehicleOptionsExtra =  RageUI.CreateSubMenu(vehicleOptions, "DriftV Remastered", "Welcome to you're Drift Haven")
@@ -86,6 +87,7 @@ local settings =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to yo
 
 main.WidthOffset = 100.0
 information.WidthOffset = 100.0
+-- vStats.WidthOffset = 100.0
 vehicle.WidthOffset = 100.0
 vehicleOptions.WidthOffset = 100.0
 vehicleOptionsExtra.WidthOffset = 100.0
@@ -156,7 +158,8 @@ function OpenMainMenu()
                     RageUI.Button('→    Settings', nil, {RightLabel = ">"}, true, {}, settings);
 
                     RageUI.Button('-----   My Stats -----', nill, {RightLabel = ""}, false, {}, nill);
-                    RageUI.Button('→    My information/stats', nil, {RightLabel = ">"}, true, {}, information);
+                    RageUI.Button('→    My stats', nil, {RightLabel = ">"}, true, {}, information);
+                    -- RageUI.Button('→    Vehicle stats', "Available only inside a vehicle", {RightLabel = ">"}, p:isInVeh(), {}, vStats);
                     RageUI.Button('→    Achievements', "Your completed achievements", {RightLabel = ">"}, true, {}, succes);
 
                     
@@ -169,7 +172,7 @@ function OpenMainMenu()
                         end,
                     });
                 end)
--- RageUI.Button('→   THIS IS  A TEST';
+
                 RageUI.IsVisible(crew, function()
                     RageUI.Button("Crew Ranking", nil, {}, true, {}, crewRankings);
                     if p:getCrew() == "None" then
@@ -251,6 +254,11 @@ function OpenMainMenu()
                     RageUI.Button("Session Drift points : "..GroupDigits(tostring(math.floor(p:sDriftPoint()))) , nil, {}, true, {}); -- Displays Local Player Drift points (CURRENT SESSION)
                     RageUI.Button("You're Crew: "..(p:PlayerCrew() or "none"), nil, {}, true, {}); -- Displays Local Player Crew
                 end)
+
+                -- RageUI.IsVisible(vStats, function ()
+                --     RageUI.Button("Money: "..GroupDigits(tostring(p:GetMoney())) .. "$", nil, {}, true, {}); -- Displays Vehicle specific drift points vehDriftPoints
+                --     RageUI.Button("Total Drift points : "..GroupDigits(tostring(math.floor(p:vehDriftPoints()))) , nil, {}, true, {});
+                -- end)
 
                 RageUI.IsVisible(vehicle, function()
                     RageUI.Button("Vehicle shop", nil, {}, true, {
