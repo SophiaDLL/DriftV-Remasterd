@@ -1,41 +1,48 @@
-function ToogleNoClip()
+function ToggleNoClip()
+    local pPed = PlayerPedId()
+    local pVehicle = GetVehiclePedIsIn(pPed, false) 
+    local entity = pVehicle ~= 0 and pVehicle or pPed 
+
     if inNoClip then
         inNoClip = false
         SetEnabled(false)
-        SetNoClipAttributes(GetPlayerPed(-1), false)
-        local pPed = PlayerPedId()
-        local pCoords = GetEntityCoords(pPed)
+        SetNoClipAttributes(entity, false)
+
+        local pCoords = GetEntityCoords(entity)
         local get, z = GetGroundZFor_3dCoord(pCoords.x, pCoords.y, pCoords.z, true, 0)
         if get then
-            SetEntityCoordsNoOffset(PlayerPedId(), pCoords.x, pCoords.y, z + 1.0, 0.0, 0.0, 0.0)
+            SetEntityCoordsNoOffset(entity, pCoords.x, pCoords.y, z + 1.0, 0.0, 0.0, 0.0)
         end
-        return
+
+        if DoesEntityExist(pVehicle) then
+            TaskWarpPedIntoVehicle(pPed, pVehicle, -1) 
+        end
+
     else
         inNoClip = true
         SetEnabled(true)
 
-
         Citizen.CreateThread(function()
             while inNoClip do
                 CameraLoop()
-                SetNoClipAttributes(p:ped(), true)
+                SetNoClipAttributes(entity, true)
                 Wait(1)
             end
         end)
     end
 end
 
-function SetNoClipAttributes(ped, status)
+function SetNoClipAttributes(entity, status)
     if status then
-        SetEntityInvincible(ped, true)
-        FreezeEntityPosition(ped, true)
-        SetEntityCollision(ped, false, false)
-        SetEntityVisible(ped, false, false)
+        SetEntityInvincible(entity, true)
+        FreezeEntityPosition(entity, true)
+        SetEntityCollision(entity, false, false)
+        SetEntityVisible(entity, false, false)
     else
-        SetEntityInvincible(ped, false)
-        FreezeEntityPosition(ped, false)
-        SetEntityCollision(ped, true, true)
-        SetEntityVisible(ped, true, true)
+        SetEntityInvincible(entity, false)
+        FreezeEntityPosition(entity, false)
+        SetEntityCollision(entity, true, true)
+        SetEntityVisible(entity, true, true)
     end
 end
 
@@ -180,7 +187,6 @@ local function SetFreecamEnabled(enable)
         UnlockMinimapPosition()
         UnlockMinimapAngle()
     end
-    --SetPlayerControl(PlayerId(), not enable)
     RenderScriptCams(enable, settings.enableEasing, settings.easingDuration)
 end
 
@@ -257,45 +263,44 @@ function GetSpeedMultiplier()
 end
 
 function CameraLoop()
-    if not IsFreecamEnabled() or IsPauseMenuActive() then
-        return
-    end
+    if not IsFreecamEnabled() or IsPauseMenuActive() then return end
+
+    local pPed = PlayerPedId()
+    local pVehicle = GetVehiclePedIsIn(pPed, false)
+    local entity = pVehicle ~= 0 and pVehicle or pPed 
+
     if not IsFreecamFrozen() then
         local vecX, vecY = GetFreecamMatrix()
         local vecZ = vector3(0, 0, 1)
         local pos = GetFreecamPosition()
         local rot = GetFreecamRotation()
-        -- Get speed multiplier for movement
         local frameMultiplier = GetFrameTime() * 60
         local speedMultiplier = GetSpeedMultiplier() * frameMultiplier
-        -- Get mouse input
+
         local mouseX = GetDisabledControlNormal(0, INPUT_LOOK_LR)
         local mouseY = GetDisabledControlNormal(0, INPUT_LOOK_UD)
-        -- Get keyboard input
+
         local moveWS = GetDisabledControlNormal(0, INPUT_MOVE_UD)
         local moveAD = GetDisabledControlNormal(0, INPUT_MOVE_LR)
         local moveQZ = GetDisabledControlNormalBetween(0, INPUT_COVER, INPUT_MULTIPLAYER_INFO)
-        -- Calculate new rotation.
+
         local rotX = rot.x + (-mouseY * settings.mouseSensitivityY)
         local rotZ = rot.z + (-mouseX * settings.mouseSensitivityX)
         local rotY = 0.0
-        -- Adjust position relative to camera rotation.
+
         pos = pos + (vecX * moveAD * speedMultiplier)
         pos = pos + (vecY * -moveWS * speedMultiplier)
         pos = pos + (vecZ * moveQZ * speedMultiplier)
 
-        if #(pos - GetEntityCoords(GetPlayerPed(-1))) > 20.0 then
-            pos = GetEntityCoords(GetPlayerPed(-1))
+        if #(pos - GetEntityCoords(pPed)) > 20.0 then
+            pos = GetEntityCoords(pPed)
         end
 
-        -- Adjust new rotation
-        rot = vector3(rotX, rotY, rotZ)
-        -- Update camera
         SetFreecamPosition(pos.x, pos.y, pos.z)
-        SetFreecamRotation(rot.x, rot.y, rot.z)
+        SetFreecamRotation(rotX, rotY, rotZ)
+        SetEntityCoordsNoOffset(entity, pos.x, pos.y, pos.z, 0.0, 0.0, 0.0)
 
         LockControls()
-        SetEntityCoordsNoOffset(GetPlayerPed(-1), pos.x, pos.y, pos.z, 0.0, 0.0, 0.0)
     end
 end
 

@@ -68,23 +68,23 @@ local hours = {
 }
 
 
-local main = RageUI.CreateMenu("DriftV Remastered", "Welcome to you're Drift Haven")
-local information =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
--- local vStats =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
-local vehicle =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
-local vehicleOptions =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
-local vehicleOptionsExtra =  RageUI.CreateSubMenu(vehicleOptions, "DriftV Remastered", "Welcome to you're Drift Haven")
-local vehicleOptionsLivery =  RageUI.CreateSubMenu(vehicleOptions, "DriftV Remastered", "Welcome to you're Drift Haven")
-local maps =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
-local camera =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
-local Spectate =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
-local instance =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
-local succes =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
-local time =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
-local crew =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
-local crewSub =  RageUI.CreateSubMenu(crew, "DriftV Remastered", "Welcome to you're Drift Haven")
-local crewRankings =  RageUI.CreateSubMenu(crew, "DriftV Remastered", "Welcome to you're Drift Haven")
-local settings =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to you're Drift Haven")
+local main = RageUI.CreateMenu("DriftV Remastered", "Welcome to your Drift Haven")
+local information =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to your Drift Haven")
+-- local vStats =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to your Drift Haven")
+local vehicle =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to your Drift Haven")
+local vehicleOptions =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to your Drift Haven")
+local vehicleOptionsExtra =  RageUI.CreateSubMenu(vehicleOptions, "DriftV Remastered", "Welcome to your Drift Haven")
+local vehicleOptionsLivery =  RageUI.CreateSubMenu(vehicleOptions, "DriftV Remastered", "Welcome to your Drift Haven")
+local maps =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to your Drift Haven")
+local camera =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to your Drift Haven")
+local Spectate =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to your Drift Haven")
+local instance =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to your Drift Haven")
+local succes =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to your Drift Haven")
+local time =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to your Drift Haven")
+local crew =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to your Drift Haven")
+local crewSub =  RageUI.CreateSubMenu(crew, "DriftV Remastered", "Welcome to your Drift Haven")
+local crewRankings =  RageUI.CreateSubMenu(crew, "DriftV Remastered", "Welcome to your Drift Haven")
+local settings =  RageUI.CreateSubMenu(main, "DriftV Remastered", "Welcome to your Drift Haven")
 
 main.WidthOffset = 100.0
 information.WidthOffset = 100.0
@@ -153,25 +153,25 @@ function OpenMainMenu()
 
                     end
                     RageUI.Button('-----   Main Options -----', nill, {RightLabel = ""}, false, {}, nill);
-                    RageUI.Button('→    My Vehicles', nil, {RightLabel = ">"}, not p:IsInGarage(), {}, vehicle);
-                    RageUI.Button('→    Vehicle options', "Available only inside a vehicle", {RightLabel = ">"}, p:isInVeh(), {}, vehicleOptions);
-                    RageUI.Button('→    Teleports', nil, {RightLabel = ">"}, not p:IsInGarage(), {}, maps);
-                    RageUI.Button('→    Manage your crew', "Change your time", {RightLabel = animatedTag.."  ~y~NEW!"}, true, {}, crew);
-                    RageUI.Button('→    Settings', nil, {RightLabel = ">"}, true, {}, settings);
+                    RageUI.Button('→    My Vehicles', nil, {RightLabel = ""}, not p:IsInGarage(), {}, vehicle);
+                    RageUI.Button('→    Vehicle options', "Available only inside a vehicle", {RightLabel = ""}, p:isInVeh(), {}, vehicleOptions);
+                    RageUI.Button('→    Teleports', nil, {RightLabel = animatedTag.."~h~~y~NEW MAPS!"}, not p:IsInGarage(), {}, maps);
+                    RageUI.Button('→    Manage your crew', "Change your time", {RightLabel =""}, true, {}, crew);
+                    RageUI.Button('→    Time Of Day', "Change your time", {RightLabel = ""}, not p:IsInGarage(), {}, time);
+                    RageUI.Button('→    Settings', nil, {RightLabel = ""}, true, {}, settings);
 
                     RageUI.Button('-----   My Stats -----', nill, {RightLabel = ""}, false, {}, nill);
-                    RageUI.Button('→    My stats', nil, {RightLabel = ">"}, true, {}, information);
+                    RageUI.Button('→    My stats', nil, {RightLabel = animatedTag.."~h~~y~NEW DISPLAYS!"}, true, {}, information);
                     -- RageUI.Button('→    Vehicle stats', "Available only inside a vehicle", {RightLabel = ">"}, p:isInVeh(), {}, vStats);
-                    RageUI.Button('→    Achievements', "Your completed achievements", {RightLabel = ">"}, true, {}, succes);
+                    RageUI.Button('→    Achievements', "Your completed achievements", {RightLabel = ""}, true, {}, succes);
 
                     
-                    RageUI.Button('-----   MISC -----', nill, {RightLabel = ""}, false, {}, nill);
-                    RageUI.Button('→    Spectate', nil, {RightLabel = ">"}, true, {}, Spectate);
-                    RageUI.Button('→    Camera', "Available only inside a vehicle", {RightLabel = ">"}, p:isInVeh(), {}, camera);
-                    RageUI.Button('→    Time Of Day', "Change your time", {RightLabel = ">"}, not p:IsInGarage(), {}, time);
-                    RageUI.Button("→    Toggle freecam", "", {}, not p:IsInGarage(), {
+                    RageUI.Button('-----   CAMERA -----', nill, {RightLabel = ""}, false, {}, nill);
+                    RageUI.Button('→    Camera', "Available only inside a vehicle", {RightLabel = ""}, p:isInVeh(), {}, camera);
+                    RageUI.Button('→    Spectate', nil, {RightLabel = animatedTag.." ~h~~p~NEW FEATURE!"}, true, {}, Spectate);
+                    RageUI.Button("→    Toggle Noclip", "", {RightLabel = animatedTag.."~h~~r~UPDATE!"}, not p:IsInGarage(), {
                         onSelected = function()
-                            ToogleNoClip()
+                            ToggleNoClip()
                         end,
                     });
                 end)
@@ -198,7 +198,7 @@ function OpenMainMenu()
                 NetworkSetInSpectatorMode(true, targetPed)
                 spectating = true
             
-                ShowNotification("Spectating player: " .. GetPlayerName(targetPlayer))
+                ShowNotification("Started Spectating")
                 CreateStopSpectateThread()
             end
             
