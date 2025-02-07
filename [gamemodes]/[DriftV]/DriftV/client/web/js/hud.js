@@ -1,87 +1,86 @@
-function betterNumber(x) {
-  return x.toLocaleString("fr-FR");
-}
+        // Initialize collapsible (accordion)
+        document.addEventListener('DOMContentLoaded', function() {
+          var elems = document.querySelectorAll('.collapsible');
+          var instances = M.Collapsible.init(elems);
+      });
 
-var lastPoints = 0;
-var lastMulti = "x0.0"
+      function betterNumber(x) {
+          return x.toLocaleString("fr-FR");
+      }
 
+      var lastPoints = 0;
+      var lastMulti = "x0.0";
 
+      $(function () {
+          window.addEventListener("message", function (event) {
+              var item = event.data;
 
-$(function () {
-  window.addEventListener("message", function (event) {
-    var item = event.data;
+              if (item.ShowHud) {
+                  // Drift points
+                  $(".driftDisplay").html(betterNumber(item.driftPoints));
+                  $(".driftDisplayMulti").html(item.driftDisplayMulti);
 
+                  lastPoints = item.driftPoints;
+                  lastMulti = item.driftDisplayMulti;
 
-    if (item.ShowHud) {
-      // Drift points
-      $(".driftDisplay").html(betterNumber(item.driftPoints));
-      $(".driftDisplayMulti").html(item.driftDisplayMulti)
+                  $("#container").fadeIn(500);
+              } else if (item.HideHud) {
+                  // Hide GUI
+                  $(".driftImage").html('<img class="animate__animated animate__hinge driftImage" src="images/drifting.png" />');
+                  $(".driftDisplay").html('<div class="animate__animated animate__hinge driftDisplay"><span> ' + lastPoints +'</span></div>');
+                  $(".driftDisplayMulti").html('<div class="animate__animated animate__hinge driftDisplayMulti"><span> ' + lastMulti + '</span></div> ');
+                  $("#container").fadeOut(1000);
+              }
 
+              if (item.ShowSucces) { 
+                  $("#containerSucces").fadeIn(100);
+                  $(".succesText").html(item.label);
+              } else if (item.HideSucces) {
+                  $("#containerSucces").fadeOut(500);
+              }
 
-      lastPoints = item.driftPoints
-      lastMulti = item.driftDisplayMulti
+              if (item.containerJoins) {
+                  $("#containerJoin").fadeIn(0);
+              } 
 
-      $("#container").fadeIn(500);
-    } else if (item.HideHud) {
-      // Hide GUI
-      $(".driftImage").html('<img class="animate__animated animate__hinge driftImage" src="images/drifting.png" />');
-      $(".driftDisplay").html('<div class="animate__animated animate__hinge driftDisplay"><span> ' + lastPoints +'</span></div>');
-      $(".driftDisplayMulti").html('<div class="animate__animated animate__hinge driftDisplayMulti"><span> ' + lastMulti + '</span></div> ');
-      $("#container").fadeOut(1000);
-    }
+              if (item.joinClick) {
+                  $("#containerJoin").fadeOut(500);
+              }
+          });
 
-    if (item.ShowSucces) { 
-      $("#containerSucces").fadeIn(100);
-      $(".succesText").html(item.label);
-    } else if (item.HideSucces) {
-      $("#containerSucces").fadeOut(500);
-    }
+          $('.clickJoinButton').on('click', function (e) {
+              e.preventDefault();
+              $.post('https://driftV/joinServer', JSON.stringify(test = false));
+          });
 
-    if (item.containerJoins) {
-      $("#containerJoin").fadeIn(0);
-    } 
+          $(document).ready(function() {
+              $(".clickJoinButton").click(function() {
+                  // Hide game logo
+                  $(".game-logo-text-1").fadeOut();
+                  $(".game-logo-text-2").fadeOut();
+                  $("nav").fadeOut();
+                  $("#containerJoin").fadeOut();
+                  $(".version").fadeOut(); 
+              });
 
-    if (item.joinClick) {
-      $("#containerJoin").fadeOut(500);
-    }
+              $(".seasonButton").click(function() {
+                  $(".game-logo-text-1").addClass("hiddenContent");
+                  $(".game-logo-text-2").addClass("hiddenContent");
+                  $("nav").addClass("hiddenContent");
+                  $("#containerJoin").addClass("hiddenContent");
+                  $("#containerSucces").addClass("hiddenContent");
+                  $(".buttonContainer").addClass("hiddenContent");
+                  $("#devUpdateModal").fadeIn();
+              });
 
-
-  });
-
-  $('.clickJoinButton').on('click', function (e) {
-		e.preventDefault();
-		$.post('https://driftV/joinServer', JSON.stringify(test = false));
-	});
-
-  $(document).ready(function() {
-    $(".clickJoinButton").click(function() {
-        // Hide game logo
-        $(".game-logo-text-1").fadeOut();
-        $(".game-logo-text-2").fadeOut();
-        $("nav").fadeOut();
-        $("#containerJoin").fadeOut();
-        $(".version").fadeOut(); 
-    });
-  
-    $(".seasonButton").click(function() {
-        $(".game-logo-text-1").addClass("hiddenContent");
-        $(".game-logo-text-2").addClass("hiddenContent");
-        $("nav").addClass("hiddenContent");
-        $("#containerJoin").addClass("hiddenContent");
-        $("#containerSucces").addClass("hiddenContent");
-        $(".buttonContainer").addClass("hiddenContent");
-        $("#devUpdateModal").fadeIn();
-    });
-  
-    $(".closeButton").click(function() {
-        $("#devUpdateModal").fadeOut();
-        $(".game-logo-text-1").removeClass("hiddenContent");
-        $(".game-logo-text-2").removeClass("hiddenContent");
-        $("nav").removeClass("hiddenContent");
-        $("#containerJoin").removeClass("hiddenContent");
-        $("#containerSucces").removeClass("hiddenContent");
-        $(".buttonContainer").removeClass("hiddenContent");
-    });
-  });
-});
-
+              $(".closeButton").click(function() {
+                  $("#devUpdateModal").fadeOut();
+                  $(".game-logo-text-1").removeClass("hiddenContent");
+                  $(".game-logo-text-2").removeClass("hiddenContent");
+                  $("nav").removeClass("hiddenContent");
+                  $("#containerJoin").removeClass("hiddenContent");
+                  $("#containerSucces").removeClass("hiddenContent");
+                  $(".buttonContainer").removeClass("hiddenContent");
+              });
+          });
+      });

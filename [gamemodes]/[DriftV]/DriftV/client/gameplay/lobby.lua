@@ -98,7 +98,7 @@ function EnableLobby()
             [3] = {
                 selected = false,
                 button = { baseX = -0.3, baseY = 0.1, baseWidth = 0, baseHeight = 0},
-                text = { baseX = 0.0, baseY = -0.04 + 0.01, center = true, scale = 1.0, text = "VEHICLE SHOP", police = 2},
+                text = { baseX = 0.0, baseY = -0.04 + 0.01, center = true, scale = 1.0, text = "SHOP", police = 2},
                 sprite = {name = "car", baseX = 0.055, baseY = -0.035, width = 0.03, height = 0.05, heading = 0.0, r = 255, g = 255, b = 255, alpha = 100},
                 action = function()
                     inLobby = false

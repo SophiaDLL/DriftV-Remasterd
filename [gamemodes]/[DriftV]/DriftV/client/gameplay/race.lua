@@ -180,6 +180,120 @@ local race = {
             {pos = vector4(-2093.932, 2298.308, 37.33912, 17.30975), passed = false},
         }
     },
+         {
+         label = "DNX DOWNHILL (Grapeseed)",
+         start = vector4(509.2826, 5401.436, 670.8432, 266.9132),
+         price = 8500,
+         expReward = 4250,
+         baseScore = 400000,
+         pointPerSec = 750,
+         speedLimit = 45,
+         points = {
+             {pos = vector4(706.3962, 5445.264, 640.4167, 333.2213), passed = false},
+             {pos = vector4(898.5911, 5538.69, 583.2724, 250.6156), passed = false},
+             {pos = vector4(1215.527, 5543.312, 502.9278, 274.3951), passed = false},
+             {pos = vector4(1192.16, 5450.95, 437.5946, 152.3939), passed = false},
+             {pos = vector4(1286.083, 5453.092, 406.1604, 266.5511), passed = false},
+             {pos = vector4(1504.39, 5455.079, 378.9609, 303.2401), passed = false},
+             {pos = vector4(1316.602, 5379.818, 355.9798, 53.64342), passed = false},
+             {pos = vector4(1385.188, 5356.068, 322.0292, 319.8287), passed = false},
+             {pos = vector4(1734.557, 5415.979, 270.4958, 278.6199), passed = false},
+             {pos = vector4(1631.805, 5317.469, 227.7281, 289.4785), passed = false},
+             {pos = vector4(2033.628, 5353.686, 162.9684, 266.8577), passed = false},
+             {pos = vector4(2405.076, 5285.546, 87.62711, 243.5846), passed = false},
+             {pos = vector4(2473.309, 5118.051, 45.81842, 185.0673), passed = false},
+         }
+     },
+     {
+        label = "DNX UPHILL (Grapeseed)",
+        start = vector4(2473.615, 5117.847, 45.79837, 7.3365),
+        price = 8500,
+        expReward = 4250,
+        baseScore = 400000,
+        pointPerSec = 750,
+        speedLimit = 45,
+        points = {
+            {pos = vector4(2405.076, 5285.546, 87.62711, 243.5846), passed = false},
+            {pos = vector4(2033.628, 5353.686, 162.9684, 266.8577), passed = false},
+            {pos = vector4(1631.805, 5317.469, 227.7281, 289.4785), passed = false},
+            {pos = vector4(1734.557, 5415.979, 270.4958, 278.6199), passed = false},
+            {pos = vector4(1385.188, 5356.068, 322.0292, 319.8287), passed = false},
+            {pos = vector4(1316.602, 5379.818, 355.9798, 53.64342), passed = false},
+            {pos = vector4(1504.39, 5455.079, 378.9609, 303.2401), passed = false},
+            {pos = vector4(1286.083, 5453.092, 406.1604, 266.5511), passed = false},
+            {pos = vector4(1192.16, 5450.95, 437.5946, 152.3939), passed = false},
+            {pos = vector4(1215.527, 5543.312, 502.9278, 274.3951), passed = false},
+            {pos = vector4(898.5911, 5538.69, 583.2724, 250.6156), passed = false},
+            {pos = vector4(706.3962, 5445.264, 640.4167, 333.2213), passed = false},
+            {pos = vector4(509.2826, 5401.436, 670.8432, 266.9132), passed = false},
+        }
+    },
+    {
+       label = "DNX DOWNHILL (Paleto)",
+       start =  vector4(342.2733, 5258.915, 645.2808, 86.31089),
+       price = 6500,
+       baseScore = 285000,
+       pointPerSec = 750,
+       speedLimit = 45,
+       points = {
+           {pos = vector4(272.9638, 5294.698, 619.9901, 193.2316), passed = false},
+           {pos = vector4(258.1189, 5592.754, 601.6661, 60.64501), passed = false},
+           {pos = vector4(411.8753, 5842.779, 551.8004, 160.0854), passed = false},
+           {pos = vector4(238.0058, 5767.861, 528.6358, 276.4357), passed = false},
+           {pos = vector4(107.2767, 5724.895, 498.2364, 160.5852), passed = false},
+           {pos = vector4(370.0889, 5917.317, 475.1984, 310.6736), passed = false},
+           {pos = vector4(261.2971, 5884.335, 448.0705, 114.6965), passed = false},
+           {pos = vector4(127.3875, 5862.978, 412.9735, 298.5591), passed = false},
+           {pos = vector4(241.0736, 5957.849, 376.9022, 112.1751), passed = false},
+           {pos = vector4(-53.60342, 5803.153, 350.0356, 315.5145), passed = false},
+           {pos = vector4(206.566, 5990.924, 331.6117, 295.8719), passed = false},
+           {pos = vector4(22.2614, 5931.761, 298.6057, 136.4969), passed = false},
+           {pos = vector4(-56.61521, 5902.782, 283.8918, 316.3917), passed = false},
+           {pos = vector4(285.6821, 6218.287, 250.9201, 126.9467), passed = false},
+           {pos = vector4(-38.30626, 5964.735, 224.3245, 140.0496), passed = false},
+           {pos = vector4(69.98751, 6100.753, 198.184, 302.896), passed = false},
+           {pos = vector4(390.3671, 6326.392, 161.9159, 94.91354), passed = false},
+           {pos = vector4(82.28471, 6153.034, 137.2733, 126.3419), passed = false},
+           {pos = vector4(-6.59749, 6142.444, 123.2905, 309.3533), passed = false},
+           {pos = vector4(346.3486, 6363.279, 100.0205, 280.3758), passed = false},
+           {pos = vector4(684.395, 6408.679, 64.24783, 269.5724), passed = false},
+           {pos = vector4(1163.838, 6587.617, 32.20724, 289.9012), passed = false},
+       }
+    },
+    {
+        label = "DNX UPHILL (Paleto)",
+        start =  vector4(1163.838, 6587.617, 32.20724, 70.9012),
+        price = 6500,
+        expReward = 3250,
+        baseScore = 285000,
+        pointPerSec = 750,
+        speedLimit = 45,
+        points = {
+            {pos = vector4(1163.838, 6587.617, 32.20724, 289.9012), passed = false},
+            {pos = vector4(684.395, 6408.679, 64.24783, 269.5724), passed = false},
+            {pos = vector4(346.3486, 6363.279, 100.0205, 280.3758), passed = false},
+            {pos = vector4(-6.59749, 6142.444, 123.2905, 309.3533), passed = false},
+            {pos = vector4(82.28471, 6153.034, 137.2733, 126.3419), passed = false},
+            {pos = vector4(390.3671, 6326.392, 161.9159, 94.91354), passed = false},
+            {pos = vector4(69.98751, 6100.753, 198.184, 302.896), passed = false},
+            {pos = vector4(-38.30626, 5964.735, 224.3245, 140.0496), passed = false},
+            {pos = vector4(285.6821, 6218.287, 250.9201, 126.9467), passed = false},
+            {pos = vector4(-56.61521, 5902.782, 283.8918, 316.3917), passed = false},
+            {pos = vector4(22.2614, 5931.761, 298.6057, 136.4969), passed = false},
+            {pos = vector4(206.566, 5990.924, 331.6117, 295.8719), passed = false},
+            {pos = vector4(-53.60342, 5803.153, 350.0356, 315.5145), passed = false},
+            {pos = vector4(241.0736, 5957.849, 376.9022, 112.1751), passed = false},
+            {pos = vector4(127.3875, 5862.978, 412.9735, 298.5591), passed = false},
+            {pos = vector4(261.2971, 5884.335, 448.0705, 114.6965), passed = false},
+            {pos = vector4(370.0889, 5917.317, 475.1984, 310.6736), passed = false},
+            {pos = vector4(107.2767, 5724.895, 498.2364, 160.5852), passed = false},
+            {pos = vector4(238.0058, 5767.861, 528.6358, 276.4357), passed = false},
+            {pos = vector4(411.8753, 5842.779, 551.8004, 160.0854), passed = false},
+            {pos = vector4(258.1189, 5592.754, 601.6661, 60.64501), passed = false},
+            {pos = vector4(272.9638, 5294.698, 619.9901, 193.2316), passed = false},
+            {pos = vector4(342.2733, 5258.915, 645.2808, 86.31089), passed = false},
+        }
+     },
     --- RACES UNDER $10,000 REWARDS   
 
     --- EXP TEMPLATE
@@ -377,7 +491,7 @@ function StartRace(data, raceKey)
     timeBar = NativeUI.TimerBarPool()
 
     local time = NativeUI.CreateTimerBar("Time:")
-    time:SetTextTimerBar("20s")
+    time:SetTextTimerBar("30s")
     timeBar:Add(time)
 
     local checkpoints = NativeUI.CreateTimerBar("Checkpoints:")
@@ -390,7 +504,7 @@ function StartRace(data, raceKey)
 
     for k,v in pairs(data.points) do
         SetBlipCoords(blip, v.pos.xyz)
-        local timer = GetGameTimer() + 20000
+        local timer = GetGameTimer() + 30000
         checkpoints:SetTextTimerBar(k.."/"..#data.points)
         local dst = #(v.pos.xyz - p:pos())
         while dst > 10.0 and not raceStopped and not p:GetCrewWarStatus() do

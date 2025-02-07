@@ -20,6 +20,8 @@ function ClearScreen()
     SetDrawOrigin(0.0, 0.0, 0.0, 0)
 end
 
+
+
 local opa = 0
 function DrawDriftV()
     SetTextFont(1)
@@ -50,7 +52,7 @@ function DrawDriftVsub()
     SetTextOutline()
     SetTextEntry("STRING")
     SetTextCentre(1)
-    AddTextComponentString("You're Drift Haven ~")
+    AddTextComponentString("Your Drift Haven ~")
     EndTextCommandDisplayText(0.50,0.60)
 end
 
