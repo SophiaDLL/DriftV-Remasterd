@@ -73,16 +73,6 @@
   color: #fff;
   text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
 }
-.driftImage {
-  max-width: 20%;
-  height: 70px;
-  position: absolute;
-  bottom: 10%;
-  right: 37.5%;
-  filter: invert();
-  transform: rotate(180deg);
-}
-
 
 #containerSucces {
   display: none;
@@ -126,6 +116,16 @@
   width: 300px
 }
 
+.driftImage {
+  max-width: 20%;
+  height: 70px;
+  position: absolute;
+  bottom: 10%;
+  right: 37.5%;
+  filter: invert();
+  transform: rotate(180deg);
+}
+
 .joinButton {
   position: absolute;
   bottom: 10%;
@@ -147,31 +147,6 @@ body {
   align-items: center;
   height: 100vh;
 }
-
-.game-logo-text-1 {
-  position: absolute;
-  font-size: 70px;
-  left: 75%;
-  bottom: 13%;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: white;
-  text-shadow: 4px 4px 6px #ff007f;
-  text-align: center;
-}
-
-.game-logo-text-2 {
-  position: absolute;
-  font-size: 60px;
-  left: 70%;
-  bottom: 8%;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #ff007f;
-  text-shadow: 4px 4px 6px #ffffff;
-  text-align: center;
-}
-
 
 #containerJoin {
   position: absolute;
@@ -231,7 +206,6 @@ nav {
   box-shadow: 0 4px 10px #ff007f; /* Added shadow */
 }
 
-
 #devUpdateModal h4 {
   text-align: center;
 }
@@ -260,6 +234,14 @@ nav {
 
 .hiddenContent {
   display: none;
+}
+
+.game-logo {
+  position: absolute;
+  width: 23vw;
+  left: 81.5%;
+  bottom: 6%;
+  transform: translateX(-50%);
 }
 
 .version {

@@ -56,8 +56,7 @@ $(function () {
   $(document).ready(function() {
     $(".clickJoinButton").click(function() {
         // Hide game logo
-        $(".game-logo-text-1").fadeOut();
-        $(".game-logo-text-2").fadeOut();
+        $(".game-logo").fadeOut();
         $("nav").fadeOut();
         $("#containerJoin").fadeOut();
         $(".version").fadeOut(); 
