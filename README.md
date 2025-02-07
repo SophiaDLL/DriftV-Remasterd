@@ -312,6 +312,7 @@ Enjoy drifting with **DriftV Remastered**! If you encounter any issues or have s
 | Map Name | Map location | Authors Download Link<sub> >> [5MODS](https://gta5-mods.com/) >> [5M Forums](https://forum.cfx.re/)<sub> | Status | Extra Notes |
 | :-: | :-: | :-: | :-: | :-: |
 | **Kush Park Drift Island** | vector4(2097.614, -2907.6, 134.1969, 261.5315) | [5M Forums Link](https://forum.cfx.re/t/release-map-free-kush-park-drift-island/4910369) | ✔️ | |
+|**DNX Chiliad Town** | vector4(490.2804, 5525.82, 778.0568, 107.7326) | [5MODS](https://fr.gta5-mods.com/maps/dnx-chiliad-town-early-access) | ✔️ | |
 
 ## 📜️ Script Credits
 
