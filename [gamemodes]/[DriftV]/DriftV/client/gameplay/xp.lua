@@ -14,51 +14,6 @@ local function GetCorrectExpForLevel(level)
     return math.floor(xp + 0.5)
 end
 
--- Example usage
-print(GetCorrectExpForLevel(1))      -- Should print 50
-print(GetCorrectExpForLevel(4000))   -- Should print an intermediate value
-print(GetCorrectExpForLevel(8000))   -- Should print 25,000,000,000
-
--- local function GetCorrectExpForLevel(level)
---     local startingExp = 50  -- Lower starting XP to reduce overall scaling
---     local baseExp = startingExp * (1.25 ^ 24)  -- EXP at level 25 (this stays similar)
-    
---     -- Adjust XP calculations to slow growth
---     if level <= 25 then
---         return math.floor(startingExp * (1.3 ^ (level - 1)))  -- Slightly slower growth
---     elseif level <= 50 then
---         local expAt25 = baseExp
---         return math.floor(expAt25 * (1.3 ^ (level - 25)))  -- Slower growth after level 25
---     elseif level <= 75 then
---         local expAt50 = baseExp * (1.3 ^ 25)  -- Slower growth at level 50
---         return math.floor(expAt50 * (1.4 ^ (level - 50)))  -- Slightly faster than previous growth
---     elseif level <= 100 then
---         local expAt75 = baseExp * (1.3 ^ 25) * (1.4 ^ 25)  -- After level 75
---         return math.floor(expAt75 * (1.5 ^ (level - 75)))  -- Normal growth rate up to level 100
---     elseif level <= 250 then
---         local expAt100 = baseExp * (1.3 ^ 25) * (1.4 ^ 25) * (1.5 ^ 25)  -- EXP at level 100
---         local multiplier = 1.1 ^ ((level - 100) / 3)  -- Slower multiplier growth after level 100
---         return math.floor(expAt100 * multiplier)
---     elseif level <= 500 then
---         local expAt250 = baseExp * (1.3 ^ 25) * (1.4 ^ 25) * (1.5 ^ 25) * (1.1 ^ 150)  -- EXP at level 250
---         local multiplier = 1.1 ^ ((level - 250) / 3)  -- More gradual growth after level 250
---         return math.floor(expAt250 * multiplier)
---     elseif level <= 1000 then
---         local expAt500 = baseExp * (1.3 ^ 25) * (1.4 ^ 25) * (1.5 ^ 25) * (1.1 ^ 150) * (1.1 ^ 250)  -- EXP at level 500
---         local multiplier = 1.05 ^ ((level - 500) / 3)  -- Slower growth after level 500
---         return math.floor(expAt500 * multiplier)
---     elseif level <= 8000 then
---         local expAt1000 = baseExp * (1.3 ^ 25) * (1.4 ^ 25) * (1.5 ^ 25) * (1.1 ^ 150) * (1.1 ^ 250) * (1.05 ^ 500)  -- EXP at level 1000
---         local multiplier = 1.02 ^ ((level - 1000) / 3)  -- Slow down the multiplier after level 1000
---         return math.floor(expAt1000 * multiplier)
---     else
---         error("Level must be between 1 and 8000")
--- 		print(GetCorrectExpForLevel(1500))  -- Should print a value close to 1.5 million XP
---     end
--- end
-
-
-
 
 function GetPlayerLevelFromXp(xp)
 	local xp = xp -- Duh
@@ -147,3 +102,4 @@ function CreateRankBar(XP_StartLimit_RankBar, XP_EndLimit_RankBar, playersPrevio
 	PushScaleformMovieFunctionParameterInt(100)						-- This one sets the opacity (visibility %) from 0 
     EndScaleformMovieMethodReturn()
 end
+

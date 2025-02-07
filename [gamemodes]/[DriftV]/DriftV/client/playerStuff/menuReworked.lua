@@ -48,15 +48,20 @@ local animatedTagState = {
 }
 
 mapsArea = {
-    {animated = true, tag = "NEW!! ", map = "Dock Run", label = "Dock Run", pos = vector3(978.5416, -3219.899, 5.900664)},
-    {animated = true, tag = "NEW!! ", map = "Vinewood Hills", label = "Vinewood Hills", pos = vector3(150.3112, 1652.589, 228.4458)},
-    {animated = true, tag = "NEW!! ", map = "Kush City Touge", label = "Kush City Touge", pos = vector3(2088.968, -2927.218, 133.5952)},
-    {animated = true, tag = "NEW!! ", map = "Kush City Right Route", label = "Kush City Right Route", pos = vector3(1623.787, -3422.958, 40.13169)},
-    {animated = true, tag = "NEW!! ", map = "LS Underground", label = "LS Underground", pos = vector3(-2088.55, 1106.927, -27.96381)},
-    {animated = true, tag = "NEW!! ", map = "LS Observatory", label = "LS Observatory", pos = vector3(-429.0257, 1190.349, 325.0423)},
-    {animated = true, tag = "NEW!! ", map = "Banham Canyon", label = "Banham Canyon", pos = vector3(-2652.097, 1514.488, 116.7912)},
-    {animated = true, tag = "NEW!! ", map = "Elysian Docks", label = "Elysian Docks", pos = vector3(202.2397, -3044.907, 5.234527)},
-    {animated = true, tag = "NEW!! ", map = "Chupacabra Docs", label = "Chupacabra Docs", pos = vector3(-165.8184, -2439.57, 5.403574)},
+    {animated = true, tag = "Los Santos", map = "Dock Run", label = "Dock Run", pos = vector3(978.5416, -3219.899, 5.900664)},
+    {animated = true, tag = "Los Santos", map = "Vinewood Hills", label = "Vinewood Hills", pos = vector3(150.3112, 1652.589, 228.4458)},
+    {animated = true, tag = "Los Santos", map = "Kush City Touge", label = "Kush City Touge", pos = vector3(2088.968, -2927.218, 133.5952)},
+    {animated = true, tag = "Los Santos", map = "Kush City Right Route", label = "Kush City Right Route", pos = vector3(1623.787, -3422.958, 40.13169)},
+    {animated = true, tag = "Los Santos", map = "LS Underground", label = "LS Underground", pos = vector3(-2088.55, 1106.927, -27.96381)},
+    {animated = true, tag = "Los Santos", map = "LS Observatory", label = "LS Observatory", pos = vector3(-429.0257, 1190.349, 325.0423)},
+    {animated = true, tag = "Los Santos", map = "Banham Canyon", label = "Banham Canyon", pos = vector3(-2652.097, 1514.488, 116.7912)},
+    {animated = true, tag = "Los Santos", map = "Elysian Docks", label = "Elysian Docks", pos = vector3(202.2397, -3044.907, 5.234527)},
+    {animated = true, tag = "Los Santos", map = "Chupacabra Docs", label = "Chupacabra Docs", pos = vector3(-165.8184, -2439.57, 5.403574)},
+    {animated = true, tag = "Blaine County", map = "DNX DOWNHILL (Grapeseed)", label = "DNX DOWNHILL (Grapeseed)", pos = vector3(509.2826, 5401.436, 670.8432)},
+    {animated = true, tag = "Blaine County", map = "DNX DOWNHILL (Paleto)", label = "DNX UPHILL (Grapeseed)", pos = vector3(1163.838, 6587.617, 32.20724)},
+    {animated = true, tag = "Blaine County", map = "DNX UPHILL (Grapeseed)", label = "DNX UPHILL (Grapeseed)", pos = vector3(2473.309, 5118.051, 45.81842)},
+    {animated = true, tag = "Blaine County", map = "DNX UPHILL (Paleto)", label = "DNX UPHILL (Grapeseed)", pos = vector3(1163.838, 6587.617, 32.20724)},
+    --vector4(509.2826, 5401.436, 670.8432, 266.9132)
     --{animated = true, tag = "REPLACE", map = "REPLACE", label = "REPLACE", pos = vector3(REPLACE)},
 }
 
@@ -396,7 +401,7 @@ function OpenMainMenu()
                     RageUI.Button("Current Level: "..GroupDigits(tostring(p:currentLevel())), nil, {}, true, {}); -- Displays Local Player Current level
                     RageUI.Button("Total Drift points : "..GroupDigits(tostring(math.floor(p:GetDrift()))) , nil, {}, true, {}); -- Displays Local Player Total ammount of DriftPoints
                     RageUI.Button("Session Drift points : "..GroupDigits(tostring(math.floor(p:sDriftPoint()))) , nil, {}, true, {}); -- Displays Local Player Drift points (CURRENT SESSION)
-                    RageUI.Button("You're Crew: "..(p:PlayerCrew() or "none"), nil, {}, true, {}); -- Displays Local Player Crew
+                    RageUI.Button("Your Crew: "..(p:PlayerCrew() or "none"), nil, {}, true, {}); -- Displays Local Player Crew
                 end)
 
                 -- RageUI.IsVisible(vStats, function ()

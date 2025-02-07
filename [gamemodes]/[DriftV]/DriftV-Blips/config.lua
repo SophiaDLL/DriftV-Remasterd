@@ -46,10 +46,10 @@ Config.Blips = {
                 {
                     type = "divider"
                 },
-                {
-                    type = "description",
-                    value = "replace"
-                },
+                -- {
+                    -- type = "description",
+                    -- value = "replace"
+                -- },
             }
         }
     },
@@ -99,10 +99,10 @@ Config.Blips = {
                 {
                     type = "divider"
                 },
-                {
-                    type = "description",
-                    value = "replace"
-                },
+                -- {
+                    -- type = "description",
+                    -- value = "replace"
+                -- },
             }
         }
     },
@@ -152,10 +152,10 @@ Config.Blips = {
                 {
                     type = "divider"
                 },
-                {
-                    type = "description",
-                    value = "replace"
-                },
+                -- {
+                    -- type = "description",
+                    -- value = "replace"
+                -- },
             }
         }
     },
@@ -205,10 +205,10 @@ Config.Blips = {
                 {
                     type = "divider"
                 },
-                {
-                    type = "description",
-                    value = "replace"
-                },
+                -- {
+                    -- type = "description",
+                    -- value = "replace"
+                -- },
             }
         }
     },
@@ -258,10 +258,10 @@ Config.Blips = {
                 {
                     type = "divider"
                 },
-                {
-                    type = "description",
-                    value = "replace"
-                },
+                -- {
+                    -- type = "description",
+                    -- value = "replace"
+                -- },
             }
         }
     },
@@ -311,10 +311,10 @@ Config.Blips = {
                 {
                     type = "divider"
                 },
-                {
-                    type = "description",
-                    value = "replace"
-                },
+                -- {
+                    -- type = "description",
+                    -- value = "replace"
+                -- },
             }
         }
     },
@@ -364,10 +364,10 @@ Config.Blips = {
                 {
                     type = "divider"
                 },
-                {
-                    type = "description",
-                    value = "replace"
-                },
+                -- {
+                    -- type = "description",
+                    -- value = "replace"
+                -- },
             }
         }
     },
@@ -417,10 +417,10 @@ Config.Blips = {
                 {
                     type = "divider"
                 },
-                {
-                    type = "description",
-                    value = "replace"
-                },
+                -- {
+                    -- type = "description",
+                    -- value = "replace"
+                -- },
             }
         }
     },
@@ -470,11 +470,264 @@ Config.Blips = {
                 {
                     type = "divider"
                 },
-                {
-                    type = "description",
-                    value = "replace"
-                },
+                -- {
+                    -- type = "description",
+                    -- value = "replace"
+                -- },
             }
         }
     },
+     {
+     position = vector3(509.2826, 5401.436, 670.8432),
+     blipId = 309,
+     blipColor = 47,
+     displayType = 4,
+     scale = 1.0,
+     shortRange = true,
+     label = "DNX DOWNHILL (Grapeseed)",
+     
+     blipInfo = {
+         setTitle = "DNX DOWNHILL (Grapeseed)",
+         setType = 2,
+         setTexture = { dict = "dvBlips", name = "DriftV" },
+         setCashText = "$8,500",
+        -- setApText = "replace",
+         setRpText = "4,250",
+         components = {
+             {
+                 type = "icon",
+                 title = "Track Type",
+                 value = "DRIFT",
+                 iconIndex = 2,
+                 iconHudColor = 1,
+                 isTicked = false
+             },
+             {
+                 type = "basic",
+                 title = "Target Score",
+                 value = "400,000"
+             },
+             {
+                 type = "social",
+                 title = "Creator",
+                 value = "DriftV", 
+                 isSocialClubName = false,
+                 crew = {
+                     tag = "DriftV",
+                     isPrivate = true, 
+                     isRockstar = true,
+                     lvl = 0,
+                     lvlColor = "#FF0000"
+                 }
+             },
+             {
+                 type = "divider"
+             },
+         }
+     }
+ },
+ {
+    position = vector3(2473.615, 5117.847, 45.79837),
+    blipId = 309,
+    blipColor = 47,
+    displayType = 4,
+    scale = 1.0,
+    shortRange = true,
+    label = "DNX UPHILL (Grapeseed)",
+    
+    blipInfo = {
+        setTitle = "DNX UPHILL (Grapeseed)",
+        setType = 2,
+        setTexture = { dict = "dvBlips", name = "DriftV" },
+        setCashText = "$8,500",
+        -- setApText = "replace",
+         setRpText = "4,250",
+        components = {
+            {
+                type = "icon",
+                title = "Track Type",
+                value = "DRIFT",
+                iconIndex = 2,
+                iconHudColor = 1,
+                isTicked = false
+            },
+            {
+                type = "basic",
+                title = "Target Score",
+                value = "400,000"
+            },
+            {
+                type = "social",
+                title = "Creator",
+                value = "DriftV", 
+                isSocialClubName = false,
+                crew = {
+                    tag = "DriftV",
+                    isPrivate = true, 
+                    isRockstar = true,
+                    lvl = 0,
+                    lvlColor = "#FF0000"
+                }
+            },
+            {
+                type = "divider"
+            },
+        }
+    }
+},
+{
+    position = vector3(1163.838, 6587.617, 32.20724),
+    blipId = 309,
+    blipColor = 47,
+    displayType = 4,
+    scale = 1.0,
+    shortRange = true,
+    label = "DNX UPHILL (Paleto)",
+    
+    blipInfo = {
+        setTitle = "DNX UPHILL (Paleto)",
+        setType = 2,
+        setTexture = { dict = "dvBlips", name = "DriftV" },
+        setCashText = "$6,500",
+        -- setApText = "replace",
+         setRpText = "3,250",
+        components = {
+            {
+                type = "icon",
+                title = "Track Type",
+                value = "DRIFT",
+                iconIndex = 2,
+                iconHudColor = 1,
+                isTicked = false
+            },
+            {
+                type = "basic",
+                title = "Target Score",
+                value = "400,000"
+            },
+            {
+                type = "social",
+                title = "Creator",
+                value = "DriftV", 
+                isSocialClubName = false,
+                crew = {
+                    tag = "DriftV",
+                    isPrivate = true, 
+                    isRockstar = true,
+                    lvl = 0,
+                    lvlColor = "#FF0000"
+                }
+            },
+            {
+                type = "divider"
+            },
+        }
+    }
+},
+{
+    position = vector3(342.2733, 5258.915, 645.2808),
+    blipId = 309,
+    blipColor = 47,
+    displayType = 4,
+    scale = 1.0,
+    shortRange = true,
+    label = "DNX DOWNHILL (Paleto)",
+    
+    blipInfo = {
+        setTitle = "DNX DOWNHILL (Paleto)",
+        setType = 2,
+        setTexture = { dict = "dvBlips", name = "DriftV" },
+        setCashText = "$6,500",
+        -- setApText = "replace",
+         setRpText = "3,250",
+        components = {
+            {
+                type = "icon",
+                title = "Track Type",
+                value = "DRIFT",
+                iconIndex = 2,
+                iconHudColor = 1,
+                isTicked = false
+            },
+            {
+                type = "basic",
+                title = "Target Score",
+                value = "400,000"
+            },
+            {
+                type = "social",
+                title = "Creator",
+                value = "DriftV", 
+                isSocialClubName = false,
+                crew = {
+                    tag = "DriftV",
+                    isPrivate = true, 
+                    isRockstar = true,
+                    lvl = 0,
+                    lvlColor = "#FF0000"
+                }
+            },
+            {
+                type = "divider"
+            },
+        }
+    }
+},
+
 }
+
+--vector4(509.2826, 5401.436, 670.8432, 266.9132)
+
+-- {
+    -- position = replace,
+    -- blipId = 309,
+    -- blipColor = 47,
+    -- displayType = 4,
+    -- scale = 1.0,
+    -- shortRange = true,
+    -- label = "replace",
+    -- 
+    -- blipInfo = {
+        -- setTitle = "replace",
+        -- setType = 2,
+        -- setTexture = { dict = "dvBlips", name = "DriftV" },
+        -- setCashText = "$replace",
+        -- setApText = "replace",
+        -- setRpText = "replace",
+        -- components = {
+            -- {
+                -- type = "icon",
+                -- title = "Track Type",
+                -- value = "DRIFT",
+                -- iconIndex = 2,
+                -- iconHudColor = 1,
+                -- isTicked = false
+            -- },
+            -- {
+                -- type = "basic",
+                -- title = "Target Score",
+                -- value = "replace
+            -- },
+            -- {
+                -- type = "social",
+                -- title = "Creator",
+                -- value = "DriftV", 
+                -- isSocialClubName = false,
+                -- crew = {
+                    -- tag = "DriftV",
+                    -- isPrivate = true, 
+                    -- isRockstar = true,
+                    -- lvl = 0,
+                    -- lvlColor = "#FF0000"
+                -- }
+            -- },
+            -- {
+                -- type = "divider"
+            -- },
+            -- {
+                -- type = "description",
+                -- value = "replace"
+            -- },
+        -- }
+    -- }
+-- },
