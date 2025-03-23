@@ -22,9 +22,12 @@ function InitPlayer(source)
         pCrew[source] = "None"
 
         -- Insert the new player data into the database
-        MySQL.insert.await('INSERT INTO `players` (license, season, pName, money, driftPoint, exp, level, cars, succes, crew, crewOwner) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', {
+        MySQL.insert.await('INSERT INTO `players` (license, season, pName, money, driftPoint, exp, level, cars, succes, crew, crewOwner) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', { 
+                --- Possibily working on GarageUogrades, Garageslots (2-4w if desicion is to continue)
+                --- MySQL.insert.await('INSERT INTO `players` (license, season, pName, money, driftPoint, exp, level, cars, succes, crew, crewOwner, GarageSlots, GarageUpgrades) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', { 
             data.license, saison, data.pName, data.money, data.driftPoint, data.exp, data.level, json.encode(player[source].cars), json.encode(data.succes), data.crew, data.crewOwner
         })
+        
         -- json.encode(data.cars)
         SavePlayer(source)
         debugPrint("Player created into database")
