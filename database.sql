@@ -15,11 +15,11 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
--- Listage de la structure de la base pour driftv
+-- Listage de la structure de la base pour driftv // Listing the base structure for driftv
 CREATE DATABASE IF NOT EXISTS `driftv` /*!40100 DEFAULT CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci */;
 USE `driftv`;
 
--- Listage de la structure de table driftv. kvp
+-- Listage de la structure de table driftv. kvp // Listing the driftv.kvp table structure
 CREATE TABLE IF NOT EXISTS `kvp` (
   `key` varchar(255) NOT NULL,
   `value` text DEFAULT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE `crews` (
     `rank` INT NOT NULL DEFAULT 500
 );
 
--- Les données exportées n'étaient pas sélectionnées.
+-- Les données exportées n'étaient pas sélectionnées. // The exported data was not selected.
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
