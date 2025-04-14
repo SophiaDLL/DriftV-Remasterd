@@ -39,84 +39,22 @@ ensure IPL_Loader
 ## 🛠️ Setup Instructions
 
 ### **1. Install DriftV Remastered**
-1. Download the latest release of **DriftV Remastered** from the [GitHub repository](https://github.com/LaureLNWK/DriftV-Remaster).
+1. Download the latest release of **DriftV Remastered** from the [GitHub repository](https://github.com/SophiaDLL/DriftV-Remasterd).
 2. Extract the contents of the ZIP file into your FiveM server's `resources` folder.**REPLACE EVERYTHING THAT IT ASKS YOU WHEN YOU DRAG AND DROP**
 3. Ensure all required resources are added to your `server.cfg` file as shown above.
 
 ### **2. Database Configuration**
 DriftV Remastered uses a MySQL database to store player and crew data. Follow these steps to set up the database:
 
-```mysql
--- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Server version:               11.5.1-MariaDB-log - mariadb.org binary distribution
--- Server OS:                    Win64
--- HeidiSQL Version:             12.1.0.6537
--- --------------------------------------------------------
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
--- Database structure for driftv
-CREATE DATABASE IF NOT EXISTS `driftv` /*!40100 DEFAULT CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci */;
-USE `driftv`;
-
--- Table structure for table `kvp`
-CREATE TABLE IF NOT EXISTS `kvp` (
-  `key` varchar(255) NOT NULL,
-  `value` text DEFAULT NULL,
-  PRIMARY KEY (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
-
-CREATE TABLE `players` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `license` VARCHAR(255) NOT NULL,
-    `season` VARCHAR(255) NOT NULL,
-    `pName` VARCHAR(255) NOT NULL,
-    `money` INT NOT NULL DEFAULT 0,
-    `driftPoint` INT NOT NULL DEFAULT 0,
-    `exp` INT NOT NULL DEFAULT 0,
-    `level` INT NOT NULL DEFAULT 0,
-    `cars` JSON NOT NULL,
-    `succes` JSON NOT NULL,
-    `crew` VARCHAR(255) NOT NULL DEFAULT 'None',
-    `crewOwner` BOOLEAN NOT NULL DEFAULT FALSE,
-    UNIQUE (`license`, `season`)
-);
-
-CREATE TABLE `crews` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `tag` VARCHAR(255) NOT NULL,
-    `name` VARCHAR(255) NOT NULL UNIQUE,
-    `memberCount` INT NOT NULL DEFAULT 1,
-    `totalPoints` INT NOT NULL DEFAULT 0,
-    `win` INT NOT NULL DEFAULT 0,
-    `loose` INT NOT NULL DEFAULT 0,
-    `elo` INT NOT NULL DEFAULT 1000,
-    `members` JSON NOT NULL,
-    `rank` INT NOT NULL DEFAULT 500
-);
-
--- Exported data was not selected.
-
--- Restore previous settings
-/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
-```
+- Ope your database of choice 
+  - When you have opend your Database Please then Drag the database.sql file into the database and Run the query
 
 ## 🚀 Running the Server
 1. Start your FiveM server.
 2. Ensure all resources are loaded correctly by checking the server console for errors.
 3. Players can now join your server and start drifting!
+
+**(IF YO NEED A FAQ THIS CAN BE FOUND AT THE VERY BOTTOM OF THE READ ME)**
 
 ---
 
@@ -129,12 +67,6 @@ CREATE TABLE `crews` (
 
 ---
 
-## 🛠️ Troubleshooting
-- **Performance Issues**: Ensure **OneSync Infinity** is enabled for optimal performance.
-- **Database Errors**: Double-check your MySQL credentials and ensure the database and tables are created correctly.
-- **Missing Resources**: Verify that all required resources are properly installed and ensured in your `server.cfg`.
-
----
 
 ## 🙏 Credits
 - **Original Creator**: [Rubylium](https://github.com/Rubylium)
@@ -143,7 +75,7 @@ CREATE TABLE `crews` (
 
 ---
 
-Enjoy drifting with **DriftV Remastered**! If you encounter any issues or have suggestions, feel free to open an issue on the [GitHub repository](https://github.com/LaureLNWK/DriftV-Remaster). Happy drifting! 🚗💨
+Enjoy drifting with **DriftV Remastered**! If you encounter any issues or have suggestions, feel free to open an issue on the [GitHub repository](https://github.com/SophiaDLL/DriftV-Remasterd). Happy drifting! 🚗💨
 
 ---
 ## 🚗 Vehicle Credits
@@ -307,6 +239,8 @@ Enjoy drifting with **DriftV Remastered**! If you encounter any issues or have s
 | **Willard Paradox** | paradox | Willard | [5MODS Link](https://www.gta5-mods.com/vehicles/willard-paradox-add-on-tuning-lods-shards) | ✔️ | |
 | **Warrener HKR WideBody** | warrener3 | Warrener | [5MODS Link](https://www.gta5-mods.com/vehicles/warrener-hkr-widebody-add-on-fivem) | ✔️ | |
 
+---
+
 ## 🗺️ Map Credits
 
 | Map Name | Map location | Authors Download Link<sub> >> [5MODS](https://gta5-mods.com/) >> [5M Forums](https://forum.cfx.re/)<sub> | Status | Extra Notes |
@@ -314,9 +248,33 @@ Enjoy drifting with **DriftV Remastered**! If you encounter any issues or have s
 | **Kush Park Drift Island** | vector4(2097.614, -2907.6, 134.1969, 261.5315) | [5M Forums Link](https://forum.cfx.re/t/release-map-free-kush-park-drift-island/4910369) | ✔️ | |
 |**DNX Chiliad Town** | vector4(490.2804, 5525.82, 778.0568, 107.7326) | [5MODS](https://fr.gta5-mods.com/maps/dnx-chiliad-town-early-access) | ✔️ | |
 
+---
+
 ## 📜️ Script Credits
 
 | Resource Name | Use in DrftV | Authors Download Link<sub> >> [GITHUB](https://github.com/)<sub> | Status | Extra Notes |
 | :-: | :-: | :-: | :-: | :-: |
 | **KBlips** | Mission on blip Display| [Github Link](https://github.com/gtasnail/kBlipInfo) | ✔️ | |
 | **yorick-antilag** | Vehicle Anti-lag System| [Github Link](https://github.com/Yorick20022/yorick-antilag) | ✔️ | |
+
+---
+
+## 🛠️ Troubleshooting
+- **Performance Issues**: Ensure **OneSync Infinity** is enabled [This resource is made to be Optimal Utilising OneSync Infinity](https://docs.fivem.net/docs/scripting-reference/onesync/)
+- **Database Errors**: Double-check your MySQL credentials and ensure the database and tables are created correctly.
+- **Missing Resources**: Verify that all required resources are properly installed and ensured in your `server.cfg`.
+- **Server starting but Not loading the resources**: When you are Dragging in the server files please **DELETE ALL THE EXISTING FILES IN (Managers, gameplay, gamemodes, local, test and system)**
+
+
+---
+
+## 🐛 Known Bugs
+
+- **Crew Wars not working**: This has been a known bug and is something that is intended to be Fixed (re-written) at a future date when We have the time available.
+
+- **NOT A BUG || Many scripts that are in progress that are not functioning in the resources**: This is as inteded, as we work on the resources They will be Edited in the source files and not in the full releases.
+
+- **Owning more than 1 of the same cars brings them both out**: As a temp mesure we have disabled the ability to buy more than 1 of the same vehicle untill we change the way that Vehicles are stored in the garage & Database to where they will then be using a UID To be found Rather of a vehicles spawn code.
+
+- **Anti-lag not functioning as inteded**: This is something that we are aware of and Would Procceed on Fixing when our bigger tasks are complete.
+---
