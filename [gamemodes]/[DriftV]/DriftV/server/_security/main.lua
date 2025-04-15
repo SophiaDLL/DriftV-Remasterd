@@ -9,20 +9,20 @@ local function uuid()
 end
 
 Events = {
-    pay = "drift:Pay",  -- Pay event for server
-    busted = "drift:GotBusted",
-    refreshCars = "drift:UpdateCars",
-    buyVeh = "drift:BuyVehicle",
-    setPassive = "drift:SetInPassive",
-    reqSync = "drift:RequestSync",
-    getSync = "drift:SyncPlayer",
-    setArchivment = "driftV:SetPlayerArchivement",
-    SetExp = "driftV:SubmitExpPoints",
-    addMoney = "driftV:AddMoney",
-    setDriftPoint = "driftV:SubmitDriftPoint",
-    raceEnd = "drift:EndRace",
-    raceData = "drift:GetRaceData",
-    sellVeh = "drift:SellVehicle"
+    pay = uuid() .."drift:Pay",  -- Pay event for server
+    busted = uuid() .."drift:GotBusted", -- Busted Event (when someone is busted)
+    refreshCars = uuid() .."drift:UpdateCars", -- Garage Refresh Event
+    buyVeh = uuid() .."drift:BuyVehicle", -- Buying Vehicle Event
+    setPassive = uuid() .."drift:SetInPassive", -- Passive mode toggle event
+    reqSync = uuid() .."drift:RequestSync",
+    getSync = uuid() .."drift:SyncPlayer",
+    setArchivment = uuid() .."driftV:SetPlayerArchivement", -- Achivement Event
+    SetExp = uuid() .."driftV:SubmitExpPoints", -- XP Event
+    addMoney = uuid() .."driftV:AddMoney", -- Money adding event
+    setDriftPoint = uuid() .."driftV:SubmitDriftPoint", -- Drift score event
+    raceEnd = uuid() .."drift:EndRace", -- Race Ending event
+    raceData = uuid() .."drift:GetRaceData", -- Race Data event
+    sellVeh = uuid() .."drift:SellVehicle", -- Sell vehicle event
 }
 
 function RegisterSecuredNetEvent(event, func)

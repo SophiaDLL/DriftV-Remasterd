@@ -1,4 +1,4 @@
--- "simulation" d'une class car Lua n'a pas vraiment de class, c'est juste pratique de faire ça
+-- "simulation" d'une class car Lua n'a pas vraiment de class, c'est juste pratique de faire ça // "simulation" of a class because Lua doesn't really have a class, it's just convenient to do that
 vehicle = {
 
     create = function(model, pos, props)

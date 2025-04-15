@@ -16,7 +16,7 @@ function InitPlayer(source)
             succes = {},
             needSave = false,
             crew = "None",
-            crewOwner = false
+            crewOwner = false,
         }
         player[source] = data
         pCrew[source] = "None"

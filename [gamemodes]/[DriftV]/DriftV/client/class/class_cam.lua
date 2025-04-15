@@ -1,4 +1,4 @@
--- "simulation" d'une class car Lua n'a pas vraiment de class, c'est juste pratique de faire ça
+-- "simulation" d'une class car Lua n'a pas vraiment de class, c'est juste pratique de faire ça // "simulation" of a class because Lua doesn't really have a class, it's just convenient to do that
 cam = {
     cams = {},
 
@@ -15,7 +15,7 @@ cam = {
             ClearFocus()
             cam.cams[name] = nil
         else
-            print("^2WARNING: ^7La cam "..name.." n'éxiste pas !")
+            print("^2WARNING: ^7The cam "..name.." doesn't exist!")
         end
     end,    
 
@@ -23,7 +23,7 @@ cam = {
         if cam.cams[name] ~= nil then
             SetCamActive(cam.cams[name], bool)
         else
-            print("^2WARNING: ^7La cam "..name.." n'éxiste pas !")
+            print("^2WARNING: ^7The cam "..name.." doesn't exist!")
         end
     end,
 
@@ -32,7 +32,7 @@ cam = {
             SetFocusPosAndVel(pos.xyz, 0.0, 0.0, 0.0)
             SetCamCoord(cam.cams[name], pos.xyz)
         else
-            print("^2WARNING: ^7La cam "..name.." n'éxiste pas !")
+            print("^2WARNING: ^7The cam "..name.." doesn't exist!")
         end
     end,    
 
@@ -40,7 +40,7 @@ cam = {
         if cam.cams[name] ~= nil then
             SetCamFov(cam.cams[name], fov)
         else
-            print("^2WARNING: ^7La cam "..name.." n'éxiste pas !")
+            print("^2WARNING: ^7The cam "..name.." doesn't exist!")
         end
     end,
 
@@ -48,7 +48,7 @@ cam = {
         if cam.cams[name] ~= nil then
             PointCamAtCoord(cam.cams[name], pos.xyz)
         else
-            print("^2WARNING: ^7La cam "..name.." n'éxiste pas !")
+            print("^2WARNING: ^7The cam "..name.." doesn't exist!")
         end
     end,
 
@@ -56,7 +56,7 @@ cam = {
         if cam.cams[name] ~= nil then
             AttachCamToEntity(cam.cams[name], entity, xOffset, yOffset, zOffset, isRelative)
         else
-            print("^2WARNING: ^7La cam "..name.." n'éxiste pas !")
+            print("^2WARNING: ^7The cam "..name.." doesn't exist!")
         end
     end,
 
@@ -64,7 +64,7 @@ cam = {
         if cam.cams[name] ~= nil then
             AttachCamToVehicleBone(cam.cams[name], vehicle, boneIndex, relativeRotation, rotX, rotY, rotZ, offX, offY, offZ, fixedDirection)
         else
-            print("^2WARNING: ^7La cam "..name.." n'éxiste pas !")
+            print("^2WARNING: ^7The cam "..name.." doesn't exist!")
         end
     end,
 
@@ -73,7 +73,7 @@ cam = {
             SetCamActive(cam.cams[name], true)
             RenderScriptCams(render, animation, time, 1, 1)
         else
-            print("^2WARNING: ^7La cam "..name.." n'éxiste pas !")
+            print("^2WARNING: ^7The cam "..name.." doesn't exist!")
         end
     end,
 

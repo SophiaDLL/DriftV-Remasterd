@@ -127,9 +127,9 @@ function OpenMainMenu()
         RageUI.Visible(main, true)
         StartLoopAnimation()
 
-        -- Refresh crew ranking every 30 secconds
+        -- Refresh crew ranking every 1 minute
         if LastCrewrankingTimer < GetGameTimer() then
-            LastCrewrankingTimer = GetGameTimer() + 30000
+            LastCrewrankingTimer = GetGameTimer() + 60000
             TriggerServerEvent("driftV:AskRefreshCrewRanking")
         end
 

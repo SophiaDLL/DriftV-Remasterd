@@ -430,7 +430,7 @@ function OpenVehShopMenu(GoBackToLobby)
                             onSelected = function()
                                 selectedSub = k
                             end,
-                        }, sub)
+                        }, sub);
                     end
                 end)
 
@@ -493,7 +493,7 @@ function OpenVehShopMenu(GoBackToLobby)
                                     end)
                                 end
                             end
-                        }, sub)
+                        }, sub);
                     end
                 end)
 
