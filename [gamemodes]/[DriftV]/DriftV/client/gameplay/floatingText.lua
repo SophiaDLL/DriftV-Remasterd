@@ -15,7 +15,7 @@ local texts = {
             "in crew wars! Crew with highest rank gets a crown above their names!",
             "",
             "We are working hard on adding even more hiqh quality features!",
-            "Don't forget to join our Discord community at discord.gg/DriftV ",
+            "Don't forget to join our Discord community at discord.gg/x88dzMfyRM ",
             "Enjoy the server!",
         }
     },

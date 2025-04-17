@@ -3,13 +3,13 @@ while not loaded do Wait(500) end
     
 
     while true do
-        SetDiscordAppId(1332768064495947939)
+        SetDiscordAppId(1362442593048461562)
         SetDiscordRichPresenceAsset("logo")
         SetDiscordRichPresenceAssetText("discord.gg/DriftV")
         if inLobby then
-            SetRichPresence("Loading into Drift Paradise")
+            SetRichPresence("Warming up there Vehicles Engine")
         elseif p:IsInGarage() then
-            SetRichPresence("Working On there Drift Vehicles")
+            SetRichPresence("Making sure everything is running Correctly")
         else
             SetRichPresence("Drifting in "..p:GetMap())
         end
